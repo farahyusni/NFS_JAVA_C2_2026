@@ -76,9 +76,66 @@ By the end of this programme, participants will be able to:
 
 ---
 
+## Day 2 - Java OOP & Service Layer
 
+### D2-01 — Clean Up Model Classes
+- Added `private` fields, constructor, getters/setters, and validation using `requireText()` to `Course.java`, `Instructor.java`, and `Student.java`
+- Added `printSummary()` for `Course` and `printProfile()` for `Instructor` and `Student`
 
+**Screenshot:** !(images/1.png)
 
+---
+
+### D2-02 — Use ArrayList and Loops
+- Created `ArrayList` for courses, instructors, students, and course offerings in `Main.java`
+- Printed all records using enhanced `for` loops
+
+**Screenshot:** !(images/1.png)
+
+---
+
+### D2-03.1 — Create CourseService Structure
+- Created `CourseService.java` under `service/` package with constructor injection of `CourseRepository`
+
+---
+
+### D2-03.2 — Create and List Courses
+- Added `createCourse()` and `getAllCourses()` to `CourseService`
+- Tested in `CourseServiceDemo.java` — sections 1 and 2
+
+**Screenshot:** !(images/CourseServiceDemo_S1,S2.png)
+
+---
+
+### D2-03.3 — Add Course Validation
+- Added `validateCourse()` and `isBlank()` private methods to `CourseService`
+- Tested null course, empty ID, empty title, and zero duration
+
+**Screenshot:** !(images/validation_test.png)
+
+---
+
+### D2-03.4 — Search and Filter Courses
+- Added `searchByTitle()` using stream + filter with case-insensitive matching
+- Added `filterByLevel()` using stream + filter with `equalsIgnoreCase`
+
+**Screenshot:** !(images/S3S4.png)
+
+---
+
+### D2-03.5 — Assign Instructor and Search by Instructor
+- Added `assignInstructor()` to link an `Instructor` to a `Course`
+- Added `searchByInstructorName()` with null-safe filtering
+
+**Screenshot:** !(images/S5S6.png)
+
+---
+
+### D2-03.6 — Update and Delete Courses
+- Added `updateDuration()` with duration validation before saving
+- Added `deleteCourse()` with existence check before deleting
+
+**Screenshot:** !(images/end.png)
 
 ---
 
