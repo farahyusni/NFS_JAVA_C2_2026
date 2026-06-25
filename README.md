@@ -82,7 +82,7 @@ By the end of this programme, participants will be able to:
 - Added `private` fields, constructor, getters/setters, and validation using `requireText()` to `Course.java`, `Instructor.java`, and `Student.java`
 - Added `printSummary()` for `Course` and `printProfile()` for `Instructor` and `Student`
 
-**Screenshot:** !(images/1.png)
+![D2-01 output](images/1.png)
 
 ---
 
@@ -90,7 +90,7 @@ By the end of this programme, participants will be able to:
 - Created `ArrayList` for courses, instructors, students, and course offerings in `Main.java`
 - Printed all records using enhanced `for` loops
 
-**Screenshot:** !(images/1.png)
+![D2-02 output](images/1.png)
 
 ---
 
@@ -103,7 +103,7 @@ By the end of this programme, participants will be able to:
 - Added `createCourse()` and `getAllCourses()` to `CourseService`
 - Tested in `CourseServiceDemo.java` — sections 1 and 2
 
-**Screenshot:** !(images/CourseServiceDemo_S1,S2.png)
+![D2-03.2 output](images/CourseServiceDemo_S1,S2.png)
 
 ---
 
@@ -111,7 +111,7 @@ By the end of this programme, participants will be able to:
 - Added `validateCourse()` and `isBlank()` private methods to `CourseService`
 - Tested null course, empty ID, empty title, and zero duration
 
-**Screenshot:** !(images/validation_test.png)
+![D2-03.3 output](images/validation_test.png)
 
 ---
 
@@ -119,7 +119,7 @@ By the end of this programme, participants will be able to:
 - Added `searchByTitle()` using stream + filter with case-insensitive matching
 - Added `filterByLevel()` using stream + filter with `equalsIgnoreCase`
 
-**Screenshot:** !(images/S3S4.png)
+![D2-03.4 output](images/S3S4.png)
 
 ---
 
@@ -127,7 +127,7 @@ By the end of this programme, participants will be able to:
 - Added `assignInstructor()` to link an `Instructor` to a `Course`
 - Added `searchByInstructorName()` with null-safe filtering
 
-**Screenshot:** !(images/S5S6.png)
+![D2-03.5 output](images/S5S6.png)
 
 ---
 
@@ -135,7 +135,7 @@ By the end of this programme, participants will be able to:
 - Added `updateDuration()` with duration validation before saving
 - Added `deleteCourse()` with existence check before deleting
 
-**Screenshot:** !(images/end.png)
+![D2-03.6 output](images/end.png)
 
 ---
 
