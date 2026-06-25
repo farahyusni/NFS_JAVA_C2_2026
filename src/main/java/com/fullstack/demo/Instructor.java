@@ -13,7 +13,7 @@ public class Instructor {
 
     public String getInstructorId() {
         return instructorId;
-    }
+    }  
 
     public String getInstructorName() {
         return instructorName;
@@ -25,7 +25,7 @@ public class Instructor {
 
     public void printProfile() {
         System.out.println("Instructor ID: " + instructorId);
-        System.out.println("Name: " + instructorName);
+        System.out.println("Instructor Name: " + instructorName);
         System.out.println("Expertise: " + expertise);
     }
 }

@@ -75,10 +75,64 @@ By the end of this programme, participants will be able to:
 
 
 ---
+## Day 1 Exercise 01 - Code Explanation
+What is the purpose of Course.java?
+ANS: It represents a course with details like ID, title, duration, level, and credit hours. It also holds a reference to an Instructor and has a printSummary() method to display all course info.
+
+What is the purpose of Instructor.java?
+ANS: It represents an instructor with fields for ID, name, and expertise. It has getters and a printProfile() method to display the instructor's details.
+
+What is the purpose of Student.java?
+ANS: It's a placeholder for future student data like name, ID, enrolled courses.
+
+What does the constructor do?
+ANS: The constructor such as in Course.java is a special method that runs when you create a new Course object. It takes values as arguments and uses this.field = value to assign them to the object's fields. 
+
+Why are the fields marked as private?
+ANS: private means the field can only be accessed from inside its own class while outside code can't read or change it directly. This protects the data from accidental or unauthorized changes.
+
+What does course1.assignInstructor(instructor1); mean?
+ANS: This would call a method named assignInstructor on the course1 object, passing an Instructor object as the argument.
+
+What does student1.printProfile(); do?
+ANS: It would call the printProfile() method on a Student object, printing that student's details to the console.
 
 
+AI-Assisted Task: Use the AI of your choice (ChatGPT, Gemini, Claude, Windsurf) and ask:
+Explain this Java class to someone who already knows Python or C++.
+
+Then write down:
+One explanation from AI that helped you.
+ANS: In Python you can just do course.title directly. In Java, private blocks that - so instead you use getTitle() to read and setTitle() to change it. It feels like extra work, but it gives you control over how the data is accessed or validated before it's changed.
+
+One part you still needed the trainer or your own reading to understand.
+ANS: why not all setter function didnt need to defined in the code ?
 
 
+## Day 1 Exercise 02 - Improve the Course Class
+Screenshot of updated course output.
+![Program Output](images/outputEx2.png)
+
+Brief explanation of what changed in Course.java.
+ANS:
+1. Added two new fields — category (String) to group the course type e.g. Programming, Frontend, Database, and active (boolean) to indicate whether the course is currently running.
+2. Updated the constructor — Both category and active are now parameters, so every Course object must be given these values when created.
+3. Added two new getters — getCategory() returns the category and isActive() returns the active status. Boolean getters use is instead of get by Java convention.
+4. Updated printSummary() — Instead of printing true or false, it now prints "Active" or "Inactive" using a ternary operator: (active ? "Active" : "Inactive").
+
+## Day 1 Exercise 03 - Add a CourseOffering Class
+Why is CourseOffering more useful than using only Course when building a real web application?
+ANS: A Course is just a template — it holds the general info like title, 
+category, and duration. But in a real web application, the same course can 
+run multiple times with different instructors, dates, and capacity limits. 
+CourseOffering represents one specific scheduled run of that course. 
+For example, "Java Fundamentals" can have a June 2026 intake and a 
+September 2026 intake as two separate offerings. This makes it easier 
+to manage enrolments, track batches, and support different delivery modes 
+like Online or Physical — without duplicating the course data each time.
+
+I use AI to :
+ANS: help me with tthe oject instances, help me to fill the details of the requirements but i understand the tasks clearly
 
 ---
 
