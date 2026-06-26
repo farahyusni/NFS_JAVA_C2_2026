@@ -122,6 +122,11 @@ Why is CourseOffering a better design than putting start date, end date, and cap
 - filter() goes through every item in the stream and keeps only the ones where the condition is true. Items where the condition is false are removed. It is the same as the if check inside a loop.
 
 ## Day3_Exercise_06_Create_StudentService
+1. How is StudentService similar to CourseService?
+- both follow the same pattern. they hold a repository, validate input before saving, throw a custom exceeption when id not found and provide method too get all, get by id, and search. the difference iis the model they referred to.
+
+2. Which file stores students temporarily while the program is running?
+- InMemoryStudentRepository. it stores students datta iin LinkedHashMap. when program stop, all data losts
 
 ---
 
