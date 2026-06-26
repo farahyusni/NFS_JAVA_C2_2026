@@ -78,7 +78,10 @@ By the end of this programme, participants will be able to:
 
 ## Day3_Exercise_01_Add_One_Course_And_Trace_Flow
 When getCourseById("C004") is called, which file does the request go to first, second, and third?
-Ans : first is CourService.java which call getCourseById. next is CourseRepository.java which call findById. third is InMemoryCourseRepository.java which refering to LinkedHashMap
+Ans : 
+1. CourseService.java which call getCourseById
+2. CourseRepository.java which call findById
+3. InMemoryCourseRepository.java which refering to LinkedHashMap
 
 ---
 
