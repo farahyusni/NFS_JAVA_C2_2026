@@ -13,6 +13,31 @@ import java.util.List;
 public class CourseService {
     private final CourseRepository courseRepository;
 
+    //Task B - Write this method using a normal loop
+    public List<Course> searchByLevelUsingLoop(String level) {
+        String safelevel = level == null ? "" : level.trim();
+
+        List<Course> results = new ArrayList<>();
+
+        for (Course course : courseRepository.findAll()) {
+            if (course.getLevel().equalsIgnoreCase(safelevel)) {
+                results.add(course);
+            }
+        }
+        return results;
+    }
+
+    //Optional Task D — Add searchByLevelUsingStream() to CourseService
+    public List<Course> searchByLevelUsingStream(String level) {
+        String safeLevel = level == null ? "" : level.trim();
+
+        return courseRepository.findAll()
+                .stream()
+                .filter(course -> course.getLevel().equalsIgnoreCase(safeLevel))
+                .toList();
+    }
+   
+
     public CourseService(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
     }

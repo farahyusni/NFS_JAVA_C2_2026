@@ -114,6 +114,13 @@ Why is throwing CourseNotFoundException better than printing inside CourseServic
 Why is CourseOffering a better design than putting start date, end date, and capacity directly inside Course?
 - Because a Course is just the content (what is being taught). A CourseOffering is a scheduled run of that course (when, where, and how many seats). The same course can run many times with different dates, different instructors, and different capacities. If you put those fields inside Course, you would need to duplicate the course every time it runs which is bad design.
 
+## Day3_Exercise_05_Loop_Search_Then_Stream_Search
+1. Which version is easier to understand: loop or stream? Why?
+- The loop version is easier to understand because each step is written out clearly — create a list, check each course, add it if it matches, return the list. You can read it line by line. The stream version is shorter but requires knowing what stream(), filter(), and toList() do.
+
+2. What does filter() do in a stream?
+- filter() goes through every item in the stream and keeps only the ones where the condition is true. Items where the condition is false are removed. It is the same as the if check inside a loop.
+
 ---
 
 
