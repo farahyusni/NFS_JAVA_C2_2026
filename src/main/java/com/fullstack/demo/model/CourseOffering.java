@@ -3,12 +3,18 @@ package com.fullstack.demo.model;
 public class CourseOffering {
     private String offeringId;
     private String offeringName;
-    private Course course;
-    private Instructor instructor;
+    private Course course;          //composition relationship with Course class
+    private Instructor instructor;  //composition relationship with Instructor class
     private String startDate;
     private String endDate;
     private int capacity;
     private String deliveryMode; // e.g., "Online", "In-Person"
+
+    //composition relationship with Course and Instructor classes
+    //Course and Instructor objects are created and managed within the CourseOffering class
+    //composition means one object uses another object as part of its state and the lifecycle of the contained object is tied to the lifecycle of the containing object.
+    //difference between composition and inheritance: Inheritance is a "is-a" relationship, while composition is a "has-a" relationship. 
+    //Inheritance allows a class to inherit properties and behaviors from a parent class, while composition allows a class to contain instances of other classes as part of its state.
 
     public CourseOffering(String offeringId, String offeringName, Course course, Instructor instructor, String startDate, String endDate, int capacity, String deliveryMode) {
         this.offeringId = offeringId;
@@ -28,10 +34,10 @@ public class CourseOffering {
     public String getOfferingName() {
         return offeringName;
     }
-    public Course getCourse() {
+    public Course getCourse() {             //composition relationship with Course class
         return course;
     }
-    public Instructor getInstructor() {
+    public Instructor getInstructor() {     //composition relationship with Instructor class
         return instructor;
     }
     public String getStartDate() {
