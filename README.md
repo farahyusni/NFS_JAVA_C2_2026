@@ -121,6 +121,8 @@ Why is CourseOffering a better design than putting start date, end date, and cap
 2. What does filter() do in a stream?
 - filter() goes through every item in the stream and keeps only the ones where the condition is true. Items where the condition is false are removed. It is the same as the if check inside a loop.
 
+## Day3_Exercise_06_Create_StudentService
+
 ---
 
 

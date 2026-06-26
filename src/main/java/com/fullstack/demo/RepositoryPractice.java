@@ -1,3 +1,4 @@
+package com.fullstack.demo;
 //package com.fullstack.demo;
 
 import com.fullstack.demo.model.Course;

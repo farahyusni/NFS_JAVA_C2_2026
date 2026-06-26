@@ -1,3 +1,4 @@
+package com.fullstack.demo;
 import com.fullstack.demo.repository.CourseRepository;
 import com.fullstack.demo.service.CourseService;
 import com.fullstack.demo.model.Course;

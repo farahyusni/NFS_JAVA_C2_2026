@@ -1,3 +1,4 @@
+package com.fullstack.demo;
 import com.fullstack.demo.exception.CourseNotFoundException;
 import com.fullstack.demo.model.Course;
 import com.fullstack.demo.repository.CourseRepository;
