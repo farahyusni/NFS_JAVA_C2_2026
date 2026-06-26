@@ -31,7 +31,7 @@ You will create a demo class that creates instructors, courses, and course offer
 Create:
 
 ```text
-src/main/java/com/fullstack/demo/Day3_Assignment04_ObjectRelationshipPractice.java
+src/main/java/com/fullstack/demo/ObjectRelationshipPractice.java
 ```
 
 ## Imports you will need
@@ -47,7 +47,7 @@ import com.fullstack.demo.model.Instructor;
 Create two instructors:
 
 ```text
-I001 - Aina Rahman - Java and Spring Boot
+I001 - Mike Rahman - Java and Spring Boot
 I002 - Marcus Lee - React and Frontend Development
 ```
 
@@ -71,7 +71,7 @@ course.setInstructor(instructor);
 Assign:
 
 ```text
-Aina Rahman -> Java Fundamentals
+Mike Rahman -> Java Fundamentals
 Marcus Lee -> React Frontend Development
 ```
 
@@ -86,7 +86,7 @@ Example values:
 ```text
 OFF001 - Java Fundamentals June Intake
 Course: Java Fundamentals
-Instructor: Aina Rahman
+Instructor: Mike Rahman
 Start Date: 2026-06-29
 End Date: 2026-06-30
 Capacity: 25
@@ -127,7 +127,7 @@ Your output should show:
 
 ```text
 === Courses ===
-Java Fundamentals with Aina Rahman
+Java Fundamentals with Mike Rahman
 React Frontend Development with Marcus Lee
 
 === Course Offerings ===
