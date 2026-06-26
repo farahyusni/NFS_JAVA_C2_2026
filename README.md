@@ -83,6 +83,29 @@ Ans :
 2. CourseRepository.java which call findById
 3. InMemoryCourseRepository.java which refering to LinkedHashMap
 
+## Day3_Exercise_02_Interface_And_Repository_Storage
+1. Why is InMemoryCourseRepository temporary storage?
+- Because it stores data inside a LinkedHashMap which lives in RAM (memory). When the program stops running, everything in memory is wiped. Nothing is saved to a file or database.
+
+private final Map<String, Course> courses = new LinkedHashMap<>();
+
+This map only exists while the program is running.
+
+2. What would replace it later when we use MongoDB?
+- A new class. For example MongoCourseRepository — that implements the same CourseRepository interface, but saves data into MongoDB instead of a LinkedHashMap.
+
+CourseRepository (interface)
+    ├── InMemoryCourseRepository   ← temporary, uses LinkedHashMap (now)
+    └── MongoCourseRepository      ← permanent, uses MongoDB (later)
+Because both classes implement the same interface, only need to change one line in the code:
+
+// now
+CourseRepository courseRepository = new InMemoryCourseRepository();
+
+// later
+CourseRepository courseRepository = new MongoCourseRepository();
+Everything else stays the same. That is the whole point of using an interface.
+
 ---
 
 

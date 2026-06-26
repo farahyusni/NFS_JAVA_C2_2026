@@ -38,3 +38,5 @@ public class InMemoryCourseRepository implements CourseRepository {
         return courses.containsKey(courseId);
     }
 }
+//override annotation is used to indicate that the method is overriding a method from the interface (courseRepository)
+//need to implement all the methods defined in the interface, otherwise it will give a compile-time error
