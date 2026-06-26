@@ -106,6 +106,10 @@ CourseRepository courseRepository = new InMemoryCourseRepository();
 CourseRepository courseRepository = new MongoCourseRepository();
 Everything else stays the same. That is the whole point of using an interface.
 
+## Day3_Exercise_03_Exception_Practice
+Why is throwing CourseNotFoundException better than printing inside CourseService?
+- Because the service does not know who is calling it. A console app prints a message, a web API returns a 404 JSON response, and a frontend app shows a popup. If the service printed the error itself, all callers would be forced to handle it the same way. By throwing an exception, each caller decides how to display the error in its own way.
+
 ---
 
 
