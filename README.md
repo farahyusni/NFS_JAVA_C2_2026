@@ -98,12 +98,31 @@ QUESTION : Why are arrow functions important before learning React?
 OUTPUT :
 ![Day4 Exercise 03 Output](images/day4-ex03-output.png)
 
+## Day4_Exercise_04_Array_Methods
+1. What is the difference between filter, find, and map?
+- filter returns a new array of all items that match a condition. find returns only the first matching item (one object). map returns a new array by transforming every item.
+
+2. Which four array methods change the original array?
+- push, pop, shift, unshift
+
+3. What does push return?
+- push returns the new length of the array after the item is added.
+
+4. What does pop return?
+- pop returns the item that was removed from the end of the array.
+
+5. What is the difference between shift and unshift?
+- shift removes the first item from the array. unshift adds a new item to the beginning of the array.
+
+OUTPUT :
+![Day4 Exercise 04 Output](images/day4-ex04-output.png)
+
+
 ---
 
 
 
 ## AI-Assisted Learning Guidelines
-
 
 
 Participants may use AI tools to:
