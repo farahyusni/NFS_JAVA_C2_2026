@@ -132,7 +132,25 @@ OUTPUT :
 ![Day4 Exercise 06 Before Search](images/day4-ex06-before.png)
 ![Day4 Exercise 06 After Search](images/day4-ex06-after.png)
 
+## Day4_Exercise_07_Fetch_Local_JSON
 
+QUESTION 1 : What does async mean?
+- async means the function contains code that may take time to finish. It allows the function to use await inside it.
+
+QUESTION 2 : What does await do?
+- await pauses execution on that line until the task is complete before moving to the next line.
+
+QUESTION 3 : What does fetch do?
+- fetch sends a request to load data from a file or API and returns a response object.
+
+QUESTION 4 : Why do we use fetch before connecting to a real backend API?
+- fetch("students.json") and fetch("http://localhost:8080/api/students") work the same way. Practising with a local JSON file first helps us understand the pattern before connecting to Spring Boot.
+
+QUESTION 5 : Why should this exercise be run using Live Server?
+- Browsers block file:// requests for security reasons. Live Server runs a local HTTP server so fetch() can load the JSON file properly.
+
+OUTPUT :
+![Day4 Exercise 07 Output](images/day4-ex07-output.png)
 
 ---
 
