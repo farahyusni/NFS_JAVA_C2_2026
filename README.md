@@ -76,9 +76,12 @@ By the end of this programme, participants will be able to:
 
 ---
 
+## Day4_Exercise_01_JavaScript_Object
+QUESTION : What is one difference between a Java object and a JavaScript object?
+- In Java, you must define a class first (like Student.java) before creating an object from it. In JavaScript, you can create an object directly using {} without any class definition.
 
-
-
+Output : 
+![Day4 Exercise 01 Output](images/day4-ex01-output.png)
 
 ---
 
