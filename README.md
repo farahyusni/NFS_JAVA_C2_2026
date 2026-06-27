@@ -83,6 +83,16 @@ QUESTION : What is one difference between a Java object and a JavaScript object?
 Output : 
 ![Day4 Exercise 01 Output](images/day4-ex01-output.png)
 
+
+## Day4_Exercise_02_Arrays_And_Loops
+QUESTION : How is a JavaScript array similar to Java ArrayList?
+- Both can grow dynamically (no fixed size), store multiple items, and be looped through. In Java you use ArrayList<> with .add() and .size(); in JavaScript you use [] with .push() and .length.
+
+OUTPUT :
+![Day4 Exercise 02 Output](images/day4-ex02-output.png)
+
+
+
 ---
 
 
