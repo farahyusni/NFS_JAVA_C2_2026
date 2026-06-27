@@ -117,6 +117,12 @@ OUTPUT :
 OUTPUT :
 ![Day4 Exercise 04 Output](images/day4-ex04-output.png)
 
+## Day4_Exercise_05_DOM_Rendering
+QUESTION : What does the DOM allow JavaScript to do?
+- The DOM (Document Object Model) allows JavaScript to access and change HTML elements on a webpage dynamically — such as creating new elements, updating content, and responding to user actions — without reloading the page.
+
+OUTPUT :
+![Day4 Exercise 05 Output](images/day4-ex05-output.png)
 
 ---
 
