@@ -91,7 +91,12 @@ QUESTION : How is a JavaScript array similar to Java ArrayList?
 OUTPUT :
 ![Day4 Exercise 02 Output](images/day4-ex02-output.png)
 
+## Day4_Exercise_03_Functions_And_Arrow_Functions
+QUESTION : Why are arrow functions important before learning React?
+- React uses arrow functions heavily for event handlers, callbacks, and functional components. Learning arrow functions now makes React code easier to read and write, since most React examples and tutorials are written using arrow function syntax.
 
+OUTPUT :
+![Day4 Exercise 03 Output](images/day4-ex03-output.png)
 
 ---
 
