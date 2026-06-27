@@ -124,6 +124,16 @@ QUESTION : What does the DOM allow JavaScript to do?
 OUTPUT :
 ![Day4 Exercise 05 Output](images/day4-ex05-output.png)
 
+## Day4_Exercise_06_Search_Filter_UI
+QUESTION : How is JavaScript filter used in a search feature?
+- filter goes through every item in the array and keeps only the ones that match the search condition. In a search feature, it compares the user's input against each student name (converted to lowercase) and returns a new array of matching students to display.
+
+OUTPUT :
+![Day4 Exercise 06 Before Search](images/day4-ex06-before.png)
+![Day4 Exercise 06 After Search](images/day4-ex06-after.png)
+
+
+
 ---
 
 
