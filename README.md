@@ -109,7 +109,39 @@ The status code tells the frontend how to react before it even needs to parse th
 ## Reflection
 After this exercise, I understand more clearly that REST APIs communicate meaning through more than just the response body — the HTTP status code and the shape of the JSON response work together to tell the full story. A 404 and a 400 look similar (both are JSON objects with a message field), but they mean very different things: one says the resource doesn't exist, the other says the request itself was malformed. This showed me why checking response.status will be a critical first step once I start writing JavaScript to consume this API — the body alone isn't enough to know if a request succeeded or failed.
 
+# Day 5 Exercise 5.2: REST API Design
 
+## API Specification Table
+
+| Resource | Method | Endpoint | Purpose | Request Body Needed? | Success Status | Possible Error Status |
+|---|---|---|---|---|---:|---:|
+| Events | GET | /api/events | View all available events | No | 200 | 500 |
+| Events | GET | /api/events/{id} | View details of one event | No | 200 | 404 |
+| Bookings | POST | /api/bookings | Create a new booking for an event | Yes | 201 | 400, 404, 409 |
+| Bookings | GET | /api/bookings | View all bookings | No | 200 | 500 |
+| Bookings | GET | /api/bookings/{id} | View details of one booking | No | 200 | 404 |
+| Bookings | PATCH | /api/bookings/{id} | Cancel an existing booking | Yes | 200 | 404, 409 |
+
+## Request Body Planning
+
+| Endpoint | Request Body Description |
+|---|---|
+| POST /api/bookings | The event being booked (eventId), how many seats/tickets are requested (quantity), and who is booking (customerName or customerId). |
+| PATCH /api/bookings/{id} | A status field set to "CANCELLED", indicating the booking should transition to cancelled. |
+
+## Error Planning
+
+| Error Case | Related Endpoint | Suitable Status Code | Explanation |
+|---|---|---:|---|
+| Required field missing (e.g. eventId or quantity not provided) | POST /api/bookings | 400 | The server can't create a booking without knowing which event and how many seats are wanted, so it rejects the malformed request before touching any data. |
+| Event does not exist | POST /api/bookings | 404 | The eventId in the request body doesn't match any existing event — nothing to book against. |
+| Event is fully booked | POST /api/bookings | 409 | Accepting the booking would over-allocate seats beyond capacity; 409 Conflict signals the request conflicts with the resource's current state. |
+| Booking does not exist | GET /api/bookings/{id}, PATCH /api/bookings/{id} | 404 | The requested booking ID doesn't exist, so it can't be viewed or cancelled. |
+| Booking is already cancelled | PATCH /api/bookings/{id} | 409 | Cancelling an already-cancelled booking is an invalid state transition, not a fresh action — 409 signals the conflict with current state. |
+
+## Why These Endpoint Names Follow REST Principles
+
+Every endpoint URL names a resource (events, bookings) — never a verb. The action being performed is expressed through the HTTP method, not the URL: GET reads, POST creates, PATCH partially updates. So instead of /cancelBooking, cancellation is PATCH /api/bookings/{id} with a body describing the new state — the URL still points at "this specific booking," and the method plus body describe what's changing about it. This keeps the API predictable: once you know the resource naming convention, you can guess almost any endpoint without memorizing a list of custom action names.
 
 ---
 
