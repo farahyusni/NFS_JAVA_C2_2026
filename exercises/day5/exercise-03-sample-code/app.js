@@ -23,3 +23,26 @@ const events = [
 ];
 
 // Write your code below
+
+// 1. Select the event list element from the HTML.
+const eventList = document.getElementById("eventList");
+const statusText = document.getElementById("statusText");
+
+// 2. Select the status text element from the HTML: Loop through the events array
+// 3. Display every event inside the unordered list.
+// 4. Each event must show: title,date,venue,available seats
+events.forEach(event => {
+    const listItem = document.createElement("li");
+    let text = `${event.title} - ${event.date} - ${event.venue} - ${event.availableSeats} seats available`;
+    
+    // (Challenge task): flag limited seats
+    if (event.availableSeats < 50) {
+        text += " - Limited seats";
+    }
+
+    listItem.textContent = text;
+    eventList.appendChild(listItem);
+});
+
+// 5. Update the status text after the events are displayed.
+statusText.textContent = `${events.length} event(s) displayed.`;

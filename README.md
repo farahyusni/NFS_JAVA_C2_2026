@@ -143,6 +143,8 @@ After this exercise, I understand more clearly that REST APIs communicate meanin
 
 Every endpoint URL names a resource (events, bookings) — never a verb. The action being performed is expressed through the HTTP method, not the URL: GET reads, POST creates, PATCH partially updates. So instead of /cancelBooking, cancellation is PATCH /api/bookings/{id} with a body describing the new state — the URL still points at "this specific booking," and the method plus body describe what's changing about it. This keeps the API predictable: once you know the resource naming convention, you can guess almost any endpoint without memorizing a list of custom action names.
 
+
+
 ---
 
 
