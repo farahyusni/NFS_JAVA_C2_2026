@@ -143,7 +143,14 @@ After this exercise, I understand more clearly that REST APIs communicate meanin
 
 Every endpoint URL names a resource (events, bookings) — never a verb. The action being performed is expressed through the HTTP method, not the URL: GET reads, POST creates, PATCH partially updates. So instead of /cancelBooking, cancellation is PATCH /api/bookings/{id} with a body describing the new state — the URL still points at "this specific booking," and the method plus body describe what's changing about it. This keeps the API predictable: once you know the resource naming convention, you can guess almost any endpoint without memorizing a list of custom action names.
 
-
+# Day 5 Final Exercise: Add Booking Endpoints to the Mock API
+1. [mock-api.js](rest-basics/mock-api.js)
+2. [requests.http](rest-basics/requests.http)
+3. A short note explaining which endpoints you completed
+- GET /api/bookings — returns all bookings (empty array if none exist yet).
+- GET /api/bookings/{id} — returns a single booking by ID, or a 404 with a descriptive message if the ID doesn't exist.
+- POST /api/bookings — creates a new booking. Validates required fields (eventId, participantName, participantEmail, seats) and returns 400 with field-level errors if invalid. Checks that the referenced event exists (404 if not) and that enough seats are available (400 if not). On success, deducts the booked seats from the event's availableSeats and returns the new booking with a 201 status.
+- DELETE /api/bookings/{id} (challenge task) — cancels a booking by setting its status to "CANCELLED" and adding its seats back to the related event's availableSeats. The booking record itself is kept in the array, not removed, and the updated booking is returned in the response.
 
 ---
 

@@ -36,3 +36,62 @@ Content-Type: application/json
   "startDate": "",
   "capacity": 0
 }
+
+### Get all bookings
+GET http://localhost:8081/api/bookings
+
+
+### Create a valid booking
+POST http://localhost:8081/api/bookings
+Content-Type: application/json
+
+{
+  "eventId": "EV001",
+  "participantName": "Rahim Gonzalez",
+  "participantEmail": "rahim@example.com",
+  "seats": 2
+}
+
+
+### Get one booking (use the id returned above)
+GET http://localhost:8081/api/bookings/BK001
+
+
+### Create a booking with missing fields
+POST http://localhost:8081/api/bookings
+Content-Type: application/json
+
+{
+  "eventId": "",
+  "participantName": "",
+  "participantEmail": "",
+  "seats": 0
+}
+
+
+### Create a booking with an invalid event ID
+POST http://localhost:8081/api/bookings
+Content-Type: application/json
+
+{
+  "eventId": "EV999",
+  "participantName": "Rahim Gonzalez",
+  "participantEmail": "rahim@example.com",
+  "seats": 2
+}
+
+
+### Create a booking with too many seats
+POST http://localhost:8081/api/bookings
+Content-Type: application/json
+
+{
+  "eventId": "EV002",
+  "participantName": "Rahim Gonzalez",
+  "participantEmail": "rahim@example.com",
+  "seats": 100
+}
+
+
+### Cancel a booking (challenge task)
+DELETE http://localhost:8081/api/bookings/BK001
