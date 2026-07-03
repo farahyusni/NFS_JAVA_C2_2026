@@ -76,7 +76,38 @@ By the end of this programme, participants will be able to:
 
 ---
 
+# Day 5 Exercise 5.1: HTTP Investigation
 
+## Investigation Table
+
+| Method | URL | Status Code | Response Type | What Happened? |
+|---|---|---:|---|---|
+| GET | /api/health | 200 | Single object | Confirmed the server is running and reachable before testing real endpoints. |
+| GET | /api/course-offerings | 200 | List | Successfully retrieved all course offerings as a JSON array of two objects. |
+| GET | /api/course-offerings/CO001 | 200 | Single object | Requested one existing course offering by ID and got back a single JSON object, not an array. |
+| GET | /api/course-offerings/C999 | 404 | Error object | Requested an ID that doesn't exist in the dataset. The server correctly rejected it with a 404 and a descriptive error message instead of returning empty data or crashing. |
+| POST | /api/course-offerings | 201 | Single object | Sent a valid course offering payload. The server created the resource, generated a new ID (CO003), and returned the full created object. |
+| POST | /api/course-offerings | 400 | Error object | Sent a payload with empty/invalid fields (blank title, blank instructor, blank date, capacity 0). The server validated the input, rejected it, and returned a list of every field that failed, rather than creating a broken record. |
+
+## Questions to Answer
+
+1. Which request returned a successful list response?
+GET /api/course-offerings — it returned status 200 with a JSON array containing all course offerings.
+
+2. Which request returned a not-found response?
+GET /api/course-offerings/C999 — the ID doesn't exist in the data, so the server returned a 404 status with a message stating the course offering was not found.
+
+3. Which request returned a validation error?
+The POST /api/course-offerings request with empty courseTitle, instructorName, startDate, and capacity: 0. It returned a 400 status with a list of field-level errors explaining exactly what was wrong with the submitted data.
+
+4. What is the difference between a successful response and an error response?
+A successful response returns the actual resource being requested — either a single object (like one course offering) or a list of objects — and uses a 2xx status code (200 for reads, 201 for creation). An error response, on the other hand, does not return the requested resource at all. Instead it returns a message field (and sometimes an errors array with details), paired with a 4xx status code that signals what went wrong — 404 means the resource doesn't exist, while 400 means the request itself was invalid.
+
+5. Why is the status code important for frontend developers?
+The status code tells the frontend how to react before it even needs to parse the response body. Since both successful and failed responses are JSON objects, the body's shape alone isn't a reliable way to detect failure — a frontend developer needs to check the status code first (e.g., if (response.status === 404) show a "not found" message, if (response.status === 400) show validation errors next to the form fields, if (response.status === 201) confirm the item was created). Without checking the status code, the app could easily treat an error message as if it were valid data.
+
+## Reflection
+After this exercise, I understand more clearly that REST APIs communicate meaning through more than just the response body — the HTTP status code and the shape of the JSON response work together to tell the full story. A 404 and a 400 look similar (both are JSON objects with a message field), but they mean very different things: one says the resource doesn't exist, the other says the request itself was malformed. This showed me why checking response.status will be a critical first step once I start writing JavaScript to consume this API — the body alone isn't enough to know if a request succeeded or failed.
 
 
 
