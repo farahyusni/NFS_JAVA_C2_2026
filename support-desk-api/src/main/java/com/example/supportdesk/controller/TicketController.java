@@ -4,6 +4,7 @@ import com.example.supportdesk.dto.TicketResponse;
 import com.example.supportdesk.service.TicketService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -20,4 +21,10 @@ public class TicketController {
     public List<TicketResponse> getTickets() {
         return ticketService.getAllTickets();
     }
+
+    @GetMapping("/api/tickets/{id}")
+    public TicketResponse getTicketById(@PathVariable String id) {
+        return ticketService.getTicketById(id);
+    }
+
 }

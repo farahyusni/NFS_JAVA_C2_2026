@@ -99,6 +99,22 @@ By the end of this programme, participants will be able to:
 
 ![Retrieve tickets information](exercises/day6/screenshots/get-tickets.png)
 
+# Exercise_03_Ticket_By_ID_And_404
+
+1. [TicketService.java](support-desk-api/src/main/java/com/example/supportdesk/service/TicketService.java)
+2. [TicketController.java](support-desk-api/src/main/java/com/example/supportdesk/controller/TicketController.java)
+3. [ResourceNotFoundException.java](support-desk-api/src/main/java/com/example/supportdesk/exception/ResourceNotFoundException.java)
+4. [GlobalExceptionHandler.java](support-desk-api/src/main/java/com/example/supportdesk/exception/GlobalExceptionHandler.java)
+5. [ErrorResponse.java](support-desk-api/src/main/java/com/example/supportdesk/dto/ErrorResponse.java)
+
+**GET /api/tickets/T001 (successful request)**
+
+![Get ticket by ID success](exercises/day6/screenshots/get-ticket-by-id.png)
+
+**GET /api/tickets/T999 (missing ticket request)**
+
+![Get ticket by ID not found](exercises/day6/screenshots/get-ticket-not-found.png)
+
 
 ---
 
