@@ -89,6 +89,15 @@ By the end of this programme, participants will be able to:
 ![About endpoint response](exercises/day6/screenshots/about-endpoint.png)
 
 
+# Exercise_02_Ticket_Read_API
+
+1. [TicketResponse.java](support-desk-api/src/main/java/com/example/supportdesk/dto/TicketResponse.java)
+2. [TicketService.java](support-desk-api/src/main/java/com/example/supportdesk/service/TicketService.java)
+3. [TicketController.java](support-desk-api/src/main/java/com/example/supportdesk/controller/TicketController.java)
+
+**GET /api/tickets**
+
+![Retrieve tickets information](exercises/day6/screenshots/get-tickets.png)
 
 
 ---
