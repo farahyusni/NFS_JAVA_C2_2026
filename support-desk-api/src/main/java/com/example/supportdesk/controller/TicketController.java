@@ -5,6 +5,12 @@ import com.example.supportdesk.service.TicketService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.http.HttpStatus;
+import jakarta.validation.Valid;
+import com.example.supportdesk.dto.CreateTicketRequest;
 
 import java.util.List;
 
@@ -26,5 +32,12 @@ public class TicketController {
     public TicketResponse getTicketById(@PathVariable String id) {
         return ticketService.getTicketById(id);
     }
+
+    @PostMapping("/api/tickets")
+    @ResponseStatus(HttpStatus.CREATED)
+    public TicketResponse createTicket(@Valid @RequestBody CreateTicketRequest request) {
+        return ticketService.createTicket(request);
+    }
+
 
 }

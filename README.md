@@ -115,6 +115,23 @@ By the end of this programme, participants will be able to:
 
 ![Get ticket by ID not found](exercises/day6/screenshots/get-ticket-not-found.png)
 
+# Exercise_04_Create_Ticket_With_Validation
+
+1. [CreateTicketRequest.java](support-desk-api/src/main/java/com/example/supportdesk/dto/CreateTicketRequest.java)
+2. [TicketService.java](support-desk-api/src/main/java/com/example/supportdesk/service/TicketService.java)
+3. [TicketController.java](support-desk-api/src/main/java/com/example/supportdesk/controller/TicketController.java)
+4. [GlobalExceptionHandler.java](support-desk-api/src/main/java/com/example/supportdesk/exception/GlobalExceptionHandler.java)
+5. [ErrorResponse.java](support-desk-api/src/main/java/com/example/supportdesk/dto/ErrorResponse.java)
+6. [FieldErrorDetail.java](support-desk-api/src/main/java/com/example/supportdesk/dto/FieldErrorDetail.java)
+
+**POST /api/tickets (valid request)**
+
+![Create ticket success](exercises/day6/screenshots/create-ticket-valid.png)
+
+**POST /api/tickets (invalid request - blank fields)**
+
+![Create ticket validation error](exercises/day6/screenshots/create-ticket-invalid.png)
+
 
 ---
 
