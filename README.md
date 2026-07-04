@@ -76,7 +76,13 @@ By the end of this programme, participants will be able to:
 
 ---
 
+# Exercise_01_Health_And_About_Endpoint
+1. Controller file.
+[InfoController.java](support-desk-api/src/main/java/com/example/supportdesk/controller/InfoController.java)
 
+2. Screenshot or copied response output for both endpoints.
+![Health endpoint response](exercises/day6/screenshots/health-endpoint.png)
+![About endpoint response](exercises/day6/screenshots/about-endpoint.png)
 
 
 
