@@ -132,6 +132,44 @@ By the end of this programme, participants will be able to:
 
 ![Create ticket validation error](exercises/day6/screenshots/create-ticket-invalid.png)
 
+# Day 6 Exercise 5: Create an HTTP Test File
+
+**Test file:** [day06-tickets.http](support-desk-api/requests/day06-tickets.http)
+
+**Endpoints tested — all working correctly:**
+
+- `GET /api/health` → 200
+- `GET /api/about` → 200
+- `GET /api/tickets` → 200 (returns full ticket list)
+- `GET /api/tickets/T001` → 200 (existing ticket)
+- `GET /api/tickets/T999` → 404 (missing ticket)
+- `POST /api/tickets` (valid body) → 201 (ticket created with new ID, `OPEN` status)
+- `POST /api/tickets` (blank fields) → 400 (validation errors for all 5 required fields)
+
+**Example successful response** (`POST /api/tickets`, 201):
+
+```json
+{
+  "id": "T006",
+  "title": "VPN connection not working",
+  "description": "User cannot connect to company VPN from home.",
+  "category": "Network",
+  "priority": "MEDIUM",
+  "status": "OPEN",
+  "createdBy": "siti@example.com",
+  "createdAt": "2026-07-04"
+}
+```
+
+**Example error response** (`GET /api/tickets/T999`, 404):
+
+```json
+{
+  "errors": [],
+  "message": "Ticket T999 was not found"
+}
+```
+
 
 ---
 
