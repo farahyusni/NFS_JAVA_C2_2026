@@ -1,14 +1,18 @@
 ### Get all tickets
 GET http://localhost:8080/api/tickets
 
+###
 
 ### Get existing ticket
-GET http://localhost:8080/api/tickets/T001
+# Replace with a real MongoDB _id after creating a ticket
+GET http://localhost:8080/api/tickets/REPLACE_WITH_REAL_ID
 
+###
 
 ### Get missing ticket
-GET http://localhost:8080/api/tickets/T999
+GET http://localhost:8080/api/tickets/000000000000000000000000
 
+###
 
 ### Create a valid ticket
 POST http://localhost:8080/api/tickets
@@ -22,8 +26,9 @@ Content-Type: application/json
   "createdBy": "siti@example.com"
 }
 
+###
 
-### Create an invalid ticket (all fields blank)
+### Create an invalid ticket
 POST http://localhost:8080/api/tickets
 Content-Type: application/json
 
