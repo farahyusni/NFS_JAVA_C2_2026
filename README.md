@@ -168,9 +168,21 @@ By the end of this programme, participants will be able to:
   "errors": [],
   "message": "Ticket T999 was not found"
 }
+
 ```
+# Day 7 Exercise 5: Persistence Checkpoint
+1. What is the role of the repository?
+- The repository acts as the data access layer. It communicates with MongoDB and provides methods such as save(), findAll(), and findById() so the service can perform database operations without writing database queries directly.
 
+2. What is the difference between `Ticket` and `TicketResponse`?
+- Ticket is the MongoDB document (model/entity) that represents how data is stored in the database.
+- TicketResponse is a Data Transfer Object (DTO) used to send ticket information back to the client. Using a DTO keeps the database model separate from the API response.
 
+3. What does MongoDB store as the document ID?
+- MongoDB automatically generates a unique _id field for each document. In your application, it is mapped to the id field in the Ticket model.
+
+4. Why should the controller not talk directly to MongoDB?
+- The controller should only handle HTTP requests and responses. Business logic belongs in the service layer, and database operations belong in the repository layer. This separation makes the application easier to maintain, test, and extend.
 ---
 
 
