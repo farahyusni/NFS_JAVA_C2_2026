@@ -76,8 +76,99 @@ By the end of this programme, participants will be able to:
 
 ---
 
+# Exercise_01_Health_And_About_Endpoint
+
+**Controller:** [InfoController.java](support-desk-api/src/main/java/com/example/supportdesk/controller/InfoController.java)
+
+**GET /api/health**
+
+![Health endpoint response](exercises/day6/screenshots/health-endpoint.png)
+
+**GET /api/about**
+
+![About endpoint response](exercises/day6/screenshots/about-endpoint.png)
 
 
+# Exercise_02_Ticket_Read_API
+
+1. [TicketResponse.java](support-desk-api/src/main/java/com/example/supportdesk/dto/TicketResponse.java)
+2. [TicketService.java](support-desk-api/src/main/java/com/example/supportdesk/service/TicketService.java)
+3. [TicketController.java](support-desk-api/src/main/java/com/example/supportdesk/controller/TicketController.java)
+
+**GET /api/tickets**
+
+![Retrieve tickets information](exercises/day6/screenshots/get-tickets.png)
+
+# Exercise_03_Ticket_By_ID_And_404
+
+1. [TicketService.java](support-desk-api/src/main/java/com/example/supportdesk/service/TicketService.java)
+2. [TicketController.java](support-desk-api/src/main/java/com/example/supportdesk/controller/TicketController.java)
+3. [ResourceNotFoundException.java](support-desk-api/src/main/java/com/example/supportdesk/exception/ResourceNotFoundException.java)
+4. [GlobalExceptionHandler.java](support-desk-api/src/main/java/com/example/supportdesk/exception/GlobalExceptionHandler.java)
+5. [ErrorResponse.java](support-desk-api/src/main/java/com/example/supportdesk/dto/ErrorResponse.java)
+
+**GET /api/tickets/T001 (successful request)**
+
+![Get ticket by ID success](exercises/day6/screenshots/get-ticket-by-id.png)
+
+**GET /api/tickets/T999 (missing ticket request)**
+
+![Get ticket by ID not found](exercises/day6/screenshots/get-ticket-not-found.png)
+
+# Exercise_04_Create_Ticket_With_Validation
+
+1. [CreateTicketRequest.java](support-desk-api/src/main/java/com/example/supportdesk/dto/CreateTicketRequest.java)
+2. [TicketService.java](support-desk-api/src/main/java/com/example/supportdesk/service/TicketService.java)
+3. [TicketController.java](support-desk-api/src/main/java/com/example/supportdesk/controller/TicketController.java)
+4. [GlobalExceptionHandler.java](support-desk-api/src/main/java/com/example/supportdesk/exception/GlobalExceptionHandler.java)
+5. [ErrorResponse.java](support-desk-api/src/main/java/com/example/supportdesk/dto/ErrorResponse.java)
+6. [FieldErrorDetail.java](support-desk-api/src/main/java/com/example/supportdesk/dto/FieldErrorDetail.java)
+
+**POST /api/tickets (valid request)**
+
+![Create ticket success](exercises/day6/screenshots/create-ticket-valid.png)
+
+**POST /api/tickets (invalid request - blank fields)**
+
+![Create ticket validation error](exercises/day6/screenshots/create-ticket-invalid.png)
+
+# Day 6 Exercise 5: Create an HTTP Test File
+
+**Test file:** [day06-tickets.http](support-desk-api/requests/day06-tickets.http)
+
+**Endpoints tested — all working correctly:**
+
+- `GET /api/health` → 200
+- `GET /api/about` → 200
+- `GET /api/tickets` → 200 (returns full ticket list)
+- `GET /api/tickets/T001` → 200 (existing ticket)
+- `GET /api/tickets/T999` → 404 (missing ticket)
+- `POST /api/tickets` (valid body) → 201 (ticket created with new ID, `OPEN` status)
+- `POST /api/tickets` (blank fields) → 400 (validation errors for all 5 required fields)
+
+**Example successful response** (`POST /api/tickets`, 201):
+
+```json
+{
+  "id": "T006",
+  "title": "VPN connection not working",
+  "description": "User cannot connect to company VPN from home.",
+  "category": "Network",
+  "priority": "MEDIUM",
+  "status": "OPEN",
+  "createdBy": "siti@example.com",
+  "createdAt": "2026-07-04"
+}
+```
+
+**Example error response** (`GET /api/tickets/T999`, 404):
+
+```json
+{
+  "errors": [],
+  "message": "Ticket T999 was not found"
+}
+```
 
 
 ---
