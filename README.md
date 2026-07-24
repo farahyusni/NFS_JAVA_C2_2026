@@ -88,6 +88,9 @@ App
     └── p ("Ticket dashboard goes here")
 ```
 
+# D11 Exercise 03 — Ticket Sample Data, List and Detail
+
+![List And Details Ticket](exercises/day11/screenshots/exercise01-list&detail-tickets-ui.png)
 ---
 
 
