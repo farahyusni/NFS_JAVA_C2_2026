@@ -112,3 +112,40 @@ main {
   margin: 0;
   color: var(--text-h);
 }
+
+.filter-panel {
+  flex: 1 1 100%;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+
+.filter-panel label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text);
+  flex: 1 1 200px;
+}
+
+.filter-panel input,
+.filter-panel select {
+  font: inherit;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+.filter-panel input:focus,
+.filter-panel select:focus {
+  outline: none;
+  border-color: var(--accent);
+}

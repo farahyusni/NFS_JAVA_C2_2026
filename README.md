@@ -91,6 +91,10 @@ App
 # D11 Exercise 03 — Ticket Sample Data, List and Detail
 
 ![List And Details Ticket](exercises/day11/screenshots/exercise01-list&detail-tickets-ui.png)
+
+# D11 Exercise 04 — State, Search and Filter
+
+![Search And Filter Ticket](exercises/day11/screenshots/exercise01-search-filter-tickets-ui.png)
 ---
 
 
