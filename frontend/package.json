@@ -1,11 +1,18 @@
 {
+<<<<<<< HEAD
   "name": "asset-tracker-ui",
   "private": true,
   "version": "0.0.0",
+=======
+  "name": "asset-tracker-ui-day11",
+  "version": "0.1.0",
+  "private": true,
+>>>>>>> a2ba22e3d184f5cd9d97030666c810b5a4fc122d
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+<<<<<<< HEAD
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -24,4 +31,15 @@
     "globals": "^17.7.0",
     "vite": "^8.1.1"
   }
+=======
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1"
+  },
+  "devDependencies": {}
+>>>>>>> a2ba22e3d184f5cd9d97030666c810b5a4fc122d
 }
