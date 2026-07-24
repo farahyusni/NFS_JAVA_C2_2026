@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.http.HttpStatus;
 import jakarta.validation.Valid;
 import com.example.supportdesk.dto.CreateTicketRequest;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -24,8 +25,11 @@ public class TicketController {
     }
 
     @GetMapping("/api/tickets")
-    public List<TicketResponse> getTickets() {
-        return ticketService.getAllTickets();
+    public List<TicketResponse> getTickets(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String priority,
+            @RequestParam(required = false) String category) {
+        return ticketService.getTickets(status, priority, category);
     }
 
     @GetMapping("/api/tickets/{id}")

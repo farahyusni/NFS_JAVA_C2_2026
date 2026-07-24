@@ -9,6 +9,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 // Marks this interface as a Spring Repository component
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /*
  * Ticket Repository
  *
@@ -41,5 +43,9 @@ public interface TicketRepository extends MongoRepository<Ticket, String> {
      *
      * therefore we use String here.
      */
+
+    List<Ticket> findByStatus(String status);
+    List<Ticket> findByPriority(String priority);
+    List<Ticket> findByCategory(String category);
 
 }

@@ -41,10 +41,21 @@ public class TicketService {
     * We then convert each Ticket model into a TicketResponse DTO
     * before returning it to the controller.
     */
-    public List<TicketResponse> getAllTickets() {
+    public List<TicketResponse> getTickets(String status, String priority, String category) {
 
-        return ticketRepository.findAll()
-                .stream()
+        List<Ticket> tickets;
+
+        if (status != null) {
+            tickets = ticketRepository.findByStatus(status);
+        } else if (priority != null) {
+            tickets = ticketRepository.findByPriority(priority);
+        } else if (category != null) {
+            tickets = ticketRepository.findByCategory(category);
+        } else {
+            tickets = ticketRepository.findAll();
+        }
+
+        return tickets.stream()
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
     }

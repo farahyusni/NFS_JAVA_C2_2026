@@ -19,11 +19,11 @@ POST http://localhost:8080/api/tickets
 Content-Type: application/json
 
 {
-  "title": "VPN connection not working",
-  "description": "User cannot connect to company VPN from home.",
-  "category": "Network",
-  "priority": "MEDIUM",
-  "createdBy": "siti@example.com"
+  "title": "Laptop won't power on",
+  "description": "Employee laptop is completely unresponsive.",
+  "category": "Hardware",
+  "priority": "HIGH",
+  "createdBy": "farah@example.com"
 }
 
 ###
