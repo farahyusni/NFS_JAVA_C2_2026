@@ -6,6 +6,8 @@ import com.example.supportdesk.repository.TicketRepository;
 import java.util.stream.Collectors;
 import com.example.supportdesk.dto.TicketResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import com.example.supportdesk.exception.ResourceNotFoundException;
 import com.example.supportdesk.dto.CreateTicketRequest;
 
@@ -131,5 +133,10 @@ public class TicketService {
                 ticket.getCreatedBy(),
                 ticket.getCreatedAt().toString()
         );
+    }
+
+    public Page<TicketResponse> getPagedTickets(Pageable pageable) {
+        return ticketRepository.findAll(pageable)
+                .map(this::convertToResponse);
     }
 }
