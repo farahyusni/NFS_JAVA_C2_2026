@@ -95,6 +95,45 @@ App
 # D11 Exercise 04 — State, Search and Filter
 
 ![Search And Filter Ticket](exercises/day11/screenshots/exercise01-search-filter-tickets-ui.png)
+
+# D11 Exercise 05 — useEffect, Loading and Error UI
+
+# D11 Exercise 06 — Component Tree and Reflection
+
+## Component Tree
+```text
+App
+├── Layout
+│   └── AppHeader
+├── TicketSummaryCards
+├── ApiInfoCard
+├── TicketFilterPanel
+└── TicketWorkspace
+    ├── TicketList
+    │   ├── PriorityBadge
+    │   └── StatusBadge
+    └── TicketDetail
+        ├── PriorityBadge
+        └── StatusBadge
+```
+
+Q1: Which component owns the selected ticket state?
+- App.jsx — it holds selectedId via useState and passes it down to TicketList (as selectedTicketId) and TicketDetail (as the resolved ticket object), plus the setter down to TicketList via onSelectTicket.
+
+Q2: Which components receive props?
+- Layout (children), TicketFilterPanel (searchText, statusFilter, onSearchChange, onStatusChange), TicketList (tickets, selectedTicketId, onSelectTicket), TicketDetail (ticket), PriorityBadge/StatusBadge (priority/status) — AppHeader and App itself take no props.
+
+Q3: What does useEffect do in your app?
+- useEffect lets a component run code as a side effect. To fetch data from the backend once when the component mounts 
+
+Q4: What loading state did you create?
+- A loading state is a boolean (or similar flag) that tracks "is the fetch still in progress?" so i can show a placeholder instead of blank/broken UI while waiting
+
+Q5: What error state did you create?
+- For failure: a piece of state (e.g. error, initially null) that gets set if the fetch throws — either a network failure (backend not running) or the throw new Error('Failed to load API info') from a non-OK response in the exercise's fetchApiInfo()
+
+Q6: What would change when you connect this UI to the protected backend API later?
+- tickets would come from a fetch/useEffect call to /api/v1/tickets instead of sampleTickets.js, you'd need to attach a JWT token to requests, handle 401/403 responses, and add loading/error states around that fetch (similar to whatever Exercise 5 has you build for the info endpoint).
 ---
 
 
