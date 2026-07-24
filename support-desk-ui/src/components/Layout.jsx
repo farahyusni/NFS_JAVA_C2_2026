@@ -1,4 +1,4 @@
-import AppHeader from './AppHeader.jsx';
+import AppHeader from './AppHeader';
 
 export default function Layout({ children }) {
   return (

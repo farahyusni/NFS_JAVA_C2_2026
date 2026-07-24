@@ -1,3 +1,10 @@
+import Layout from './components/Layout';
+//import AppHeader from './components/AppHeader';
+
 export default function App() {
-  return <h1>Support Desk UI</h1>;
+  return (
+    <Layout>
+      <p>Ticket dashboard goes here</p>
+    </Layout>
+  );
 }

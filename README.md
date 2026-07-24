@@ -79,6 +79,14 @@ By the end of this programme, participants will be able to:
 
 ![Support Desk UI](exercises/day11/screenshots/exercise01-support-desk-ui.png)
 
+# D11 Exercise 02 — Build Layout Components
+
+```text
+App
+└── Layout
+    ├── AppHeader
+    └── p ("Ticket dashboard goes here")
+```
 
 ---
 
