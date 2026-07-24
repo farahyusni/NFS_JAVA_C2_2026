@@ -75,9 +75,9 @@ By the end of this programme, participants will be able to:
 
 
 ---
+# D11 Exercise 01 — Create the React Project
 
-
-
+![Support Desk UI](exercises/day11/screenshots/exercise01-support-desk-ui.png)
 
 
 ---
