@@ -324,7 +324,9 @@ HTTP/1.1 201 Created
 }
 ```
 
-
+# Day 9 Exercise 4 - Seed an Admin User
+**File:** [SecurityConfig.java](support-desk-api/src/main/java/com/example/supportdesk/config/UserDataSeeder.java)
+![successful admin login](exercises/day9/screenshots/admin-login.png)
 ---
 
 
