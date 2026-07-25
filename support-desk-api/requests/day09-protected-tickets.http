@@ -1,0 +1,41 @@
+@userToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlckBleGFtcGxlLmNvbSIsInJvbGUiOiJVU0VSIiwiaXNzIjoic3VwcG9ydC1kZXNrLWFwaSIsIm5hbWUiOiJUZXN0IFVzZXIiLCJleHAiOjE3ODQ5ODk3MjksImlhdCI6MTc4NDk4NjEyOSwidXNlcklkIjoiNmE2NGJhMTFmNmYzNjY2YWRkNzNjZTIyIn0.ZFiukIntKfYCB9onsSXqw3AA5_AAD3BQlZVPcZ1KtGQ
+@adminToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmYXJhaEBleGFtcGxlLmNvbSIsInJvbGUiOiJBRE1JTiIsImlzcyI6InN1cHBvcnQtZGVzay1hcGkiLCJuYW1lIjoiRmFyYWggWXVzbmkiLCJleHAiOjE3ODQ5ODk2NzMsImlhdCI6MTc4NDk4NjA3MywidXNlcklkIjoiNmE2NDE3ZTRhOTkxZTU0YmJkOTI2NThlIn0.0Pfy9mh3bIvOw327VghQ2IItHk9kwNAYNod9vjphV6o
+
+### No token - expect 401
+GET http://localhost:8080/api/tickets
+
+###
+
+### USER token - expect 200
+GET http://localhost:8080/api/tickets
+Authorization: Bearer {{userToken}}
+
+###
+
+### POST with USER token - expect 403
+POST http://localhost:8080/api/tickets
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "title": "Should be blocked",
+  "description": "USER role cannot create tickets",
+  "category": "Network",
+  "priority": "LOW",
+  "createdBy": "farah@example.com"
+}
+
+###
+
+### POST with ADMIN token - expect 201
+POST http://localhost:8080/api/tickets
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "title": "Should be allowed",
+  "description": "ADMIN role can create tickets",
+  "category": "Network",
+  "priority": "HIGH",
+  "createdBy": "admin@example.com"
+}

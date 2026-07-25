@@ -270,7 +270,59 @@ HTTP/1.1 401 Unauthorized
   "message": "Invalid email or password"
 }
 ```
+# Day 9 Exercise 3 - Protect Ticket Endpoints
 
+**File:** [SecurityConfig.java](support-desk-api/src/main/java/com/example/supportdesk/security/SecurityConfig.java)
+
+**Test file:** [day09-protected-tickets.http](support-desk-api/requests/day09-protected-tickets.http)
+
+**GET /api/tickets (no token)**
+
+```json
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Bearer resource_metadata="http://localhost:8080/.well-known/oauth-protected-resource"
+GET /api/tickets (USER token)
+
+
+HTTP/1.1 200 OK
+
+[
+  {
+    "id": "6a6340f13d181d1ac0533acd",
+    "title": "Laptop won't power on",
+    "category": "Hardware",
+    "priority": "HIGH",
+    "status": "OPEN",
+    "createdBy": "farah@example.com",
+    "createdAt": "2026-07-24T18:39:45.721"
+  }
+  // ...full ticket list returned successfully
+]
+```
+
+POST /api/tickets (USER token)
+
+```json
+HTTP/1.1 403 Forbidden
+WWW-Authenticate: Bearer error="insufficient_scope", error_description="The request requires higher privileges than provided by the access token."
+```
+
+POST /api/tickets (ADMIN token)
+
+```json
+HTTP/1.1 201 Created
+
+{
+  "id": "6a64ba73f6f3666add73ce23",
+  "title": "Should be allowed",
+  "description": "ADMIN role can create tickets",
+  "category": "Network",
+  "priority": "HIGH",
+  "status": "OPEN",
+  "createdBy": "admin@example.com",
+  "createdAt": "2026-07-25T21:30:27.509683600"
+}
+```
 
 
 ---
