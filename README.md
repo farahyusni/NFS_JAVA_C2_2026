@@ -183,6 +183,9 @@ By the end of this programme, participants will be able to:
 
 4. Why should the controller not talk directly to MongoDB?
 - The controller should only handle HTTP requests and responses. Business logic belongs in the service layer, and database operations belong in the repository layer. This separation makes the application easier to maintain, test, and extend.
+Day 8 Exercise 3: Add Ticket Indexes and Logging
+# Day 8 Exercise 3: Add Ticket Indexes and Logging
+![Ticket Logging](exercises/day8/screenshots/image.png)
 ---
 
 

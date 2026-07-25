@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 
 // Import @Document to map this class to a MongoDB collection
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.time.LocalDateTime;
 
@@ -39,6 +40,7 @@ public class Ticket {
     // Hardware
     // Software
     // Network
+    @Indexed
     private String category;
 
     // Priority level
@@ -46,6 +48,7 @@ public class Ticket {
     // Low
     // Medium
     // High
+    @Indexed
     private String priority;
 
     // Current ticket status
@@ -53,12 +56,15 @@ public class Ticket {
     // Open
     // In Progress
     // Closed
+    @Indexed
     private String status;
 
     // Name of the user who created the ticket
+    @Indexed
     private String createdBy;
 
     // Date and time the ticket was created
+    @Indexed
     private LocalDateTime createdAt;
 
     /*

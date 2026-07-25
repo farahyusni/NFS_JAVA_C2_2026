@@ -15,6 +15,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class TicketService {
 
@@ -25,6 +28,7 @@ public class TicketService {
     * at runtime.
     */
     private final TicketRepository ticketRepository;
+    private static final Logger logger = LoggerFactory.getLogger(TicketService.class);
 
     /*
     * Constructor Injection
@@ -44,6 +48,8 @@ public class TicketService {
     * before returning it to the controller.
     */
     public List<TicketResponse> getTickets(String status, String priority, String category) {
+
+        logger.info("Fetching tickets with filters - status: {}, priority: {}, category: {}", status, priority, category);
 
         List<Ticket> tickets;
 
@@ -110,6 +116,8 @@ public class TicketService {
         * MongoDB automatically generates the document ID.
         */
         Ticket savedTicket = ticketRepository.save(ticket);
+        
+        logger.info("Created ticket with id: {}", savedTicket.getId());
 
         // Convert the saved Ticket into a response DTO
         return convertToResponse(savedTicket);
@@ -136,6 +144,9 @@ public class TicketService {
     }
 
     public Page<TicketResponse> getPagedTickets(Pageable pageable) {
+        logger.info("Fetching paginated tickets - page: {}, size: {}, sort: {}",
+        pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort());
+
         return ticketRepository.findAll(pageable)
                 .map(this::convertToResponse);
     }
