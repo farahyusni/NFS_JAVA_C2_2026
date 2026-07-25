@@ -184,8 +184,26 @@ By the end of this programme, participants will be able to:
 4. Why should the controller not talk directly to MongoDB?
 - The controller should only handle HTTP requests and responses. Business logic belongs in the service layer, and database operations belong in the repository layer. This separation makes the application easier to maintain, test, and extend.
 Day 8 Exercise 3: Add Ticket Indexes and Logging
+
 # Day 8 Exercise 3: Add Ticket Indexes and Logging
+
 ![Ticket Logging](exercises/day8/screenshots/image.png)
+
+# Day 8 Exercise 4: Query Test File and Notes
+1. Which query parameters did you implement?
+- Filtering: status, priority, category on GET /api/tickets. Pagination/sorting: page, size, sortBy, direction on GET /api/tickets/paged.
+
+2. Which fields did you index?
+- category, priority, status, createdBy, createdAt — all annotated with @Indexed in Ticket.java, created automatically via spring.data.mongodb.auto-index-creation=true.
+
+3. Why should an API use pagination?
+- Returning the entire collection on every request doesn't scale — as ticket volume grows, response size, memory use, and network transfer time grow with it. Pagination caps each response to a fixed page size, keeping response times predictable regardless of how many total tickets exist.
+
+4. What log messages appear when you call the filtering endpoint?
+- Fetching tickets with filters - status: OPEN, priority: null, category: null (values reflect whatever query params were actually passed; unset ones log as null).
+
+5. What endpoint proves your sorting works?
+- GET /api/tickets/paged?page=0&size=5&sortBy=createdAt&direction=desc — comparing the createdAt timestamps in the response's content array shows them in strictly descending order (confirmed earlier: Laptop 18:39:45 → ... → Unable to login Jul 10). Switching direction=asc reverses that order, proving the sort parameter is actually driving the query rather than being ignored.
 ---
 
 
