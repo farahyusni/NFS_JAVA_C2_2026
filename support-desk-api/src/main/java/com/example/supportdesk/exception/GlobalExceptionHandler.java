@@ -32,4 +32,16 @@ public class GlobalExceptionHandler {
         return new ErrorResponse("Validation failed", errors);
     }
 
+    @ExceptionHandler(DuplicateResourceException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleDuplicateResource(DuplicateResourceException exception) {
+        return new ErrorResponse(exception.getMessage());
+    }
+
+    @ExceptionHandler(org.springframework.security.core.AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleAuthenticationFailure(org.springframework.security.core.AuthenticationException exception) {
+        return new ErrorResponse("Invalid email or password");
+    }
+
 }

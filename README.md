@@ -204,6 +204,75 @@ Day 8 Exercise 3: Add Ticket Indexes and Logging
 
 5. What endpoint proves your sorting works?
 - GET /api/tickets/paged?page=0&size=5&sortBy=createdAt&direction=desc — comparing the createdAt timestamps in the response's content array shows them in strictly descending order (confirmed earlier: Laptop 18:39:45 → ... → Unable to login Jul 10). Switching direction=asc reverses that order, proving the sort parameter is actually driving the query rather than being ignored.
+
+# Day 9 Exercise 2 - Register and Login
+
+1. [RegisterRequest.java](support-desk-api/src/main/java/com/example/supportdesk/dto/RegisterRequest.java)
+2. [LoginRequest.java](support-desk-api/src/main/java/com/example/supportdesk/dto/LoginRequest.java)
+3. [AuthResponse.java](support-desk-api/src/main/java/com/example/supportdesk/dto/AuthResponse.java)
+4. [AuthService.java](support-desk-api/src/main/java/com/example/supportdesk/service/AuthService.java)
+5. [JwtService.java](support-desk-api/src/main/java/com/example/supportdesk/service/JwtService.java)
+6. [AuthController.java](support-desk-api/src/main/java/com/example/supportdesk/controller/AuthController.java)
+7. [SecurityConfig.java](support-desk-api/src/main/java/com/example/supportdesk/security/SecurityConfig.java)
+8. [AppUserDetailsService.java](support-desk-api/src/main/java/com/example/supportdesk/security/AppUserDetailsService.java)
+9. [DuplicateResourceException.java](support-desk-api/src/main/java/com/example/supportdesk/exception/DuplicateResourceException.java)
+10. [GlobalExceptionHandler.java](support-desk-api/src/main/java/com/example/supportdesk/exception/GlobalExceptionHandler.java)
+
+**Test file:** [day09-auth.http](support-desk-api/requests/day09-auth.http)
+
+**POST /api/auth/register (Register success)**
+
+```json
+HTTP/1.1 201 Created
+
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmYXJhaEBleGFtcGxlLmNvbSIsInJvbGUiOiJVU0VSIiwiaXNzIjoic3VwcG9ydC1kZXNrLWFwaSIsIm5hbWUiOiJGYXJhaCBZdXNuaSIsImV4cCI6MTc4NDk0ODIxMiwiaWF0IjoxNzg0OTQ0NjEyLCJ1c2VySWQiOiI2YTY0MTdlNGE5OTFlNTRiYmQ5MjY1OGUifQ.4v5YJHJkyXvBvuSkhFDvQFXgOpWPhLuyEHuAJl305es",
+  "tokenType": "Bearer",
+  "expiresInMinutes": 60,
+  "userId": "6a6417e4a991e54bbd92658e",
+  "name": "Farah Yusni",
+  "email": "farah@example.com",
+  "role": "USER"
+}
+```
+
+**POST /api/auth/register (Duplicate email error)**
+```json
+HTTP/1.1 409 Conflict
+
+{
+  "errors": [],
+  "message": "Email already exists: farah@example.com"
+}
+```
+
+**POST /api/auth/login (Login success)**
+```json
+HTTP/1.1 200 OK
+
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmYXJhaEBleGFtcGxlLmNvbSIsInJvbGUiOiJVU0VSIiwiaXNzIjoic3VwcG9ydC1kZXNrLWFwaSIsIm5hbWUiOiJGYXJhaCBZdXNuaSIsImV4cCI6MTc4NDk0ODI1OSwiaWF0IjoxNzg0OTQ0NjU5LCJ1c2VySWQiOiI2YTY0MTdlNGE5OTFlNTRiYmQ5MjY1OGUifQ.hwEgoJTAyySJyMzDEdohG6cEgoTYtwY8VwRP2Xqim84",
+  "tokenType": "Bearer",
+  "expiresInMinutes": 60,
+  "userId": "6a6417e4a991e54bbd92658e",
+  "name": "Farah Yusni",
+  "email": "farah@example.com",
+  "role": "USER"
+}
+```
+
+**POST /api/auth/login (Wrong password error)**
+```json
+HTTP/1.1 401 Unauthorized
+
+{
+  "errors": [],
+  "message": "Invalid email or password"
+}
+```
+
+
+
 ---
 
 
