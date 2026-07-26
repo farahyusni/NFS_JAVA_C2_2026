@@ -325,7 +325,7 @@ HTTP/1.1 201 Created
 ```
 
 # Day 9 Exercise 4 - Seed an Admin User
-**File:** [SecurityConfig.java](support-desk-api/src/main/java/com/example/supportdesk/config/UserDataSeeder.java)
+**File:** [UserDataSeeder.java](support-desk-api/src/main/java/com/example/supportdesk/config/UserDataSeeder.java)
 ![successful admin login](exercises/day9/screenshots/admin-login.png)
 
 # Day 10 Exercise 1: Add Versioned Ticket API Endpoints
@@ -334,7 +334,11 @@ HTTP/1.1 201 Created
 Why might a company keep both `/api/tickets` and `/api/v1/tickets` temporarily?
 -  Existing clients/integrations built against the original unversioned endpoint would break immediately if it were renamed or changed in place. Keeping both allows the new version (with its different behavior, like the loosened POST permission here) to roll out without forcing every consumer to update at the same instant
 
+# Day 10 Exercise 2: Create a Ticket Report by Status
+**File:** [day10-tickets-v1.http](support-desk-api/src/main/java/com/example/supportdesk/requests/day10-tickets-v1.http)
 
+Why is a grouped report endpoint better than asking the frontend to download all tickets and count them manually?
+- It shifts the counting work to the database, which is built to aggregate efficiently even over large datasets, instead of transferring every ticket document over the network just to throw away all fields except status
 ---
 
 
