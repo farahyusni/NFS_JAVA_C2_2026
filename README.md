@@ -327,6 +327,14 @@ HTTP/1.1 201 Created
 # Day 9 Exercise 4 - Seed an Admin User
 **File:** [SecurityConfig.java](support-desk-api/src/main/java/com/example/supportdesk/config/UserDataSeeder.java)
 ![successful admin login](exercises/day9/screenshots/admin-login.png)
+
+# Day 10 Exercise 1: Add Versioned Ticket API Endpoints
+**File:** [SecurityConfig.java](support-desk-api/src/main/java/com/example/supportdesk/config/SecurityConfig.java)
+
+Why might a company keep both `/api/tickets` and `/api/v1/tickets` temporarily?
+-  Existing clients/integrations built against the original unversioned endpoint would break immediately if it were renamed or changed in place. Keeping both allows the new version (with its different behavior, like the loosened POST permission here) to roll out without forcing every consumer to update at the same instant
+
+
 ---
 
 

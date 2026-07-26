@@ -1,0 +1,26 @@
+### V1 - no token - expect 401
+GET http://localhost:8080/api/v1/tickets
+
+###
+
+### Login to get a token
+# @name login
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "day9demo@example.com",
+  "password": "password123"
+}
+
+###
+
+### V1 - with valid token - expect 200
+GET http://localhost:8080/api/v1/tickets
+Authorization: Bearer {{login.response.body.$.token}}
+
+###
+
+### Old unversioned endpoint still works - expect 200
+GET http://localhost:8080/api/tickets
+Authorization: Bearer {{login.response.body.$.token}}
