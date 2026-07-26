@@ -459,6 +459,17 @@ Q5: What error state did you create?
 Q6: What would change when you connect this UI to the protected backend API later?
 - tickets would come from a fetch/useEffect call to /api/v1/tickets instead of sampleTickets.js, you'd need to attach a JWT token to requests, handle 401/403 responses, and add loading/error states around that fetch (similar to whatever Exercise 5 has you build for the info endpoint).
 
+# Day 12 Exercise 1: Add React Router
+1. http://localhost:5173/login 
+![login](exercises/day12/screenshots/login.png)
+
+2. http://localhost:5173/app/dashboard 
+![dashboard](exercises/day12/screenshots/dashboard.png)
+
+3. http://localhost:5173/app/tickets 
+![tickets](exercises/day12/screenshots/tickets.png)
+
+
 ---
 
 
