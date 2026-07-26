@@ -32,3 +32,6 @@ Authorization: Bearer {{login.response.body.$.token}}
 ### Ticket report by priority - expect 200
 GET http://localhost:8080/api/v1/reports/tickets-by-priority
 Authorization: Bearer {{login.response.body.$.token}}
+
+### API documentation - expect 200, no auth needed
+GET http://localhost:8080/api/docs

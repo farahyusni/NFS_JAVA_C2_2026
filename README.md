@@ -345,6 +345,12 @@ Why is a grouped report endpoint better than asking the frontend to download all
 
 How could this report help a support manager decide where to assign staff?
 - A count of tickets grouped by priority immediately shows workload skew — e.g. if HIGH has a large count relative to LOW/MEDIUM, the manager knows urgent issues are piling up and can reassign staff toward high-priority tickets before SLAs are missed, without having to manually scan or filter the full ticket list to notice the imbalance.
+
+# Day 10 Exercise 4: Create a Simple API Documentation Endpoint
+**File:** [day10-tickets-v1.http](support-desk-api/src/main/java/com/example/supportdesk/requests/day10-tickets-v1.http)
+
+Why is API documentation useful before frontend integration?
+- It gives frontend developers a single reference for exactly which endpoints exist, what HTTP method and path each uses, and what access level each requires — without them needing to read your Java source or guess by trial and error. 
 ---
 
 
