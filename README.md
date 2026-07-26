@@ -379,26 +379,6 @@ Why is API documentation useful before frontend integration?
 
 **Test file:** [day10-tickets-v1.http](support-desk-api/requests/day10-tickets-v1.http)
 
-**Checklist:**
-
-- [x] Project runs successfully
-- [x] MongoDB connection works
-- [x] Ticket model uses @Document and @Id
-- [x] TicketRepository extends MongoRepository
-- [x] Basic CRUD endpoints work (Create + Read only — no Update/Delete yet)
-- [x] Filtering works
-- [x] Pagination works
-- [x] Sorting works
-- [x] Duplicate or validation errors return clear responses
-- [x] Register endpoint works
-- [x] Login endpoint returns JWT
-- [x] Protected endpoints reject missing token
-- [x] Protected endpoints accept valid token
-- [x] Versioned /api/v1 routes exist
-- [x] Report endpoint works
-- [x] API documentation endpoint exists
-- [x] .http file contains test evidence
-
 **Successful login response:**
 
 ![Login response](exercises/day10/screenshots/login.png)
