@@ -1,3 +1,46 @@
+.app-header {
+  padding-bottom: 8px;
+}
+
+.app-header .eyebrow {
+  margin: 0 0 4px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.app-nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 0 24px 24px;
+}
+
+.app-nav a {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  color: var(--text);
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.app-nav a:hover {
+  border-color: var(--accent-border);
+  color: var(--text-h);
+}
+
+.app-nav a.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
 main {
   display: flex;
   gap: 24px;
@@ -6,6 +49,18 @@ main {
   padding: 24px;
   flex-wrap: wrap;
   text-align: left;
+}
+
+.login-page,
+.page-placeholder {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  flex: 1 1 380px;
+  max-width: 480px;
+  text-align: left;
+  margin: 0 auto;
 }
 
 .card {

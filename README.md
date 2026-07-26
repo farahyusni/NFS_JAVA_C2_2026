@@ -469,7 +469,8 @@ Q6: What would change when you connect this UI to the protected backend API late
 3. http://localhost:5173/app/tickets 
 ![tickets](exercises/day12/screenshots/tickets.png)
 
-
+# Day 12 Exercise 2: Create Nested App Layout
+![navigation](exercises/day12/screenshots/navigation.png)
 ---
 
 

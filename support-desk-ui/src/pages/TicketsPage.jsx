@@ -1,4 +1,3 @@
-import Layout from '../components/Layout';
 import TicketList from '../components/TicketList';
 import { sampleTickets } from '../data/sampleTickets';
 import TicketDetail from '../components/TicketDetail';
@@ -23,7 +22,7 @@ export default function TicketsPage() {
   const selectedTicket = tickets.find((ticket) => ticket.id === selectedId);
 
   return (
-    <Layout>
+    <>
       <ApiInfoCard />
       <TicketFilterPanel
         searchText={searchText}
@@ -37,6 +36,6 @@ export default function TicketsPage() {
         onSelectTicket={(ticket) => setSelectedId(ticket.id)}
       />
       <TicketDetail ticket={selectedTicket} />
-    </Layout>
+    </>
   );
 }
