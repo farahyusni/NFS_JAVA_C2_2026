@@ -420,9 +420,10 @@ App
 ![Search And Filter Ticket](exercises/day11/screenshots/exercise01-search-filter-tickets-ui.png)
 
 # D11 Exercise 05 — useEffect, Loading and Error UI
+![backend successful state](exercises/day11/screenshots/exercise05-backend-connection-success.png)
+![backend error state](exercises/day11/screenshots/exercise05-backend-connection-fail.png)
 
 # D11 Exercise 06 — Component Tree and Reflection
-
 ## Component Tree
 ```text
 App

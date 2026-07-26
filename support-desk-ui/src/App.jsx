@@ -5,6 +5,7 @@ import TicketDetail from './components/TicketDetail';
 import { useState } from 'react';
 import './App.css';
 import TicketFilterPanel from './components/TicketFilterPanel';
+import ApiInfoCard from './components/ApiInfoCard';
 
 //import AppHeader from './components/AppHeader';
 
@@ -26,6 +27,7 @@ export default function App() {
 
   return (
     <Layout>
+      <ApiInfoCard />
       <TicketFilterPanel
         searchText={searchText}
         statusFilter={statusFilter}
