@@ -339,6 +339,12 @@ Why might a company keep both `/api/tickets` and `/api/v1/tickets` temporarily?
 
 Why is a grouped report endpoint better than asking the frontend to download all tickets and count them manually?
 - It shifts the counting work to the database, which is built to aggregate efficiently even over large datasets, instead of transferring every ticket document over the network just to throw away all fields except status
+
+# Day 10 Exercise 3: Create a Ticket Report by Priority
+**File:** [day10-tickets-v1.http](support-desk-api/src/main/java/com/example/supportdesk/requests/day10-tickets-v1.http)
+
+How could this report help a support manager decide where to assign staff?
+- A count of tickets grouped by priority immediately shows workload skew — e.g. if HIGH has a large count relative to LOW/MEDIUM, the manager knows urgent issues are piling up and can reassign staff toward high-priority tickets before SLAs are missed, without having to manually scan or filter the full ticket list to notice the imbalance.
 ---
 
 

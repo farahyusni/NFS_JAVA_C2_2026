@@ -24,9 +24,17 @@ public class TicketReportService {
 
     public List<ReportCountResponse> countTicketsByStatus() {
         logger.info("Generating ticket count report by status");
+        return countTicketsByField("status");
+    }
 
+    public List<ReportCountResponse> countTicketsByPriority() {
+        logger.info("Generating ticket count report by priority");
+        return countTicketsByField("priority");
+    }
+
+    private List<ReportCountResponse> countTicketsByField(String field) {
         Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.group("status").count().as("count"),
+                Aggregation.group(field).count().as("count"),
                 Aggregation.project("count").and("_id").as("label"),
                 Aggregation.sort(Sort.Direction.ASC, "label")
         );
