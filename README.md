@@ -351,6 +351,25 @@ How could this report help a support manager decide where to assign staff?
 
 Why is API documentation useful before frontend integration?
 - It gives frontend developers a single reference for exactly which endpoints exist, what HTTP method and path each uses, and what access level each requires — without them needing to read your Java source or guess by trial and error. 
+
+# Day 10 Exercise 5: Backend Milestone Review
+**File:** [day10-tickets-v1.http](support-desk-api/src/main/java/com/example/supportdesk/requests/day10-tickets-v1.http)
+
+**Successful login response:**
+
+![Login response](exercises/day10/screenshots/login.png)
+
+**Protected endpoint working with token:**
+
+![Protected endpoint with token](exercises/day10/screenshots/protected-endpoints.png)
+
+**Report endpoint response:**
+
+![Ticket report by status](exercises/day10/screenshots/ticket-by-status.png)
+
+**/api/docs response:**
+
+![API documentation endpoint](exercises/day10/screenshots/docs-api.png)
 ---
 
 
