@@ -471,9 +471,11 @@ Q6: What would change when you connect this UI to the protected backend API late
 
 # Day 12 Exercise 2: Create Nested App Layout
 ![navigation](exercises/day12/screenshots/navigation.png)
+
+# Day 12 Exercise 4: Protect Ticket Pages
+![protected tickets](exercises/day12/screenshots/protected-ticket.png)
+
 ---
-
-
 
 ## AI-Assisted Learning Guidelines
 
