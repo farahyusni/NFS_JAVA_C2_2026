@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import com.example.supportdesk.exception.ResourceNotFoundException;
 import com.example.supportdesk.dto.CreateTicketRequest;
+import com.example.supportdesk.dto.UpdateTicketRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -120,6 +121,31 @@ public class TicketService {
         logger.info("Created ticket with id: {}", savedTicket.getId());
 
         // Convert the saved Ticket into a response DTO
+        return convertToResponse(savedTicket);
+    }
+
+    /*
+    * Update an existing Ticket document in MongoDB.
+    *
+    * Unlike createTicket, the client supplies every field,
+    * including status, because they are editing an existing ticket.
+    */
+    public TicketResponse updateTicket(String id, UpdateTicketRequest request) {
+
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Ticket " + id + " was not found"));
+
+        ticket.setTitle(request.title());
+        ticket.setDescription(request.description());
+        ticket.setCategory(request.category());
+        ticket.setPriority(request.priority());
+        ticket.setStatus(request.status());
+
+        Ticket savedTicket = ticketRepository.save(ticket);
+
+        logger.info("Updated ticket with id: {}", savedTicket.getId());
+
         return convertToResponse(savedTicket);
     }
 
