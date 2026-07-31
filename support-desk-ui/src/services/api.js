@@ -32,15 +32,40 @@ export async function loginRequest(email, password) {
   return parseJsonResponse(response);
 }
 
-export async function createTicketRequest(token, ticket) {
+export async function createTicket(token, payload) {
   const response = await fetch('/api/v1/tickets', {
+
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`
     },
-    body: JSON.stringify(ticket)
+    body: JSON.stringify(payload)
   });
 
   return parseJsonResponse(response);
 }
+
+export async function updateTicket(id, token, payload) {
+  const response = await fetch(`/api/v1/tickets/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(payload)
+  });
+
+  return parseJsonResponse(response);
+}
+
+export async function fetchTicketById(id, token) {
+  const response = await fetch(`/api/v1/tickets/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  return parseJsonResponse(response);
+}
+

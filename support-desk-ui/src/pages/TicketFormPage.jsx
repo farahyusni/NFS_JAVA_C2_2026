@@ -1,15 +1,65 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router';
 import TicketFormWizard from '../components/TicketFormWizard.jsx';
+import { emptyTicketForm } from '../components/emptyTicketForm.js';
+import ErrorMessage from '../components/ErrorMessage.jsx';
+import LoadingMessage from '../components/LoadingMessage.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
-import { createTicketRequest } from '../services/api.js';
+import { createTicket, fetchTicketById, updateTicket } from '../services/api.js';
 
 export default function TicketFormPage() {
+  const { id } = useParams();
   const navigate = useNavigate();
   const { token, user } = useAuth();
+  const [initialValues, setInitialValues] = useState(emptyTicketForm);
+  const [loading, setLoading] = useState(Boolean(id));
+  const [loadError, setLoadError] = useState('');
   const [saving, setSaving] = useState(false);
   const [serverError, setServerError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+
+  const isEditMode = Boolean(id);
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function loadTicketForEdit() {
+      if (!id) {
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setLoadError('');
+        const ticket = await fetchTicketById(id, token);
+
+        if (!ignore) {
+          setInitialValues({
+            title: ticket.title ?? '',
+            description: ticket.description ?? '',
+            category: ticket.category ?? '',
+            priority: ticket.priority ?? 'LOW',
+            status: ticket.status ?? 'OPEN'
+          });
+        }
+      } catch (err) {
+        if (!ignore) {
+          setLoadError(err.message || 'Could not load ticket for editing.');
+          console.error(err);
+        }
+      } finally {
+        if (!ignore) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadTicketForEdit();
+
+    return () => {
+      ignore = true;
+    };
+  }, [id, token]);
 
   async function handleSubmit(payload) {
     try {
@@ -17,15 +67,19 @@ export default function TicketFormPage() {
       setServerError('');
       setSuccessMessage('');
 
-      await createTicketRequest(token, {
-        title: payload.title,
-        description: payload.description,
-        category: payload.category,
-        priority: payload.priority,
-        createdBy: user?.email ?? ''
-      });
-
-      setSuccessMessage('Ticket created successfully.');
+      if (isEditMode) {
+        await updateTicket(id, token, payload);
+        setSuccessMessage('Ticket updated successfully.');
+      } else {
+        await createTicket(token, {
+          title: payload.title,
+          description: payload.description,
+          category: payload.category,
+          priority: payload.priority,
+          createdBy: user?.email ?? ''
+        });
+        setSuccessMessage('Ticket created successfully.');
+      }
     } catch (err) {
       setServerError(err.message || 'Could not save ticket.');
       console.error(err);
@@ -34,13 +88,21 @@ export default function TicketFormPage() {
     }
   }
 
+  if (loading) {
+    return <LoadingMessage message="Loading ticket form..." />;
+  }
+
+  if (loadError) {
+    return <ErrorMessage message={loadError} />;
+  }
+
   return (
     <>
       <section className="card welcome-card">
         <div>
           <p className="eyebrow">Forms & validation</p>
-          <h2>Create a new ticket</h2>
-          <p>Fill in the details below and submit to raise a new support ticket.</p>
+          <h2>{isEditMode ? 'Edit existing ticket' : 'Create a new ticket'}</h2>
+          <p>Fill in the details below and submit to {isEditMode ? 'update this' : 'raise a new'} support ticket.</p>
         </div>
         <div className="action-row">
           <Link className="button-link secondary" to="/app/tickets">Back to Tickets</Link>
@@ -53,6 +115,9 @@ export default function TicketFormPage() {
       </section>
 
       <TicketFormWizard
+        key={id || 'create'}
+        mode={isEditMode ? 'edit' : 'create'}
+        initialValues={initialValues}
         onSubmit={handleSubmit}
         saving={saving}
         serverError={serverError}

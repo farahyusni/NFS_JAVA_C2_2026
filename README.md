@@ -503,6 +503,21 @@ Q6: What would change when you connect this UI to the protected backend API late
 **File:** [TicketFormWizard.jsx](support-desk-ui/src/components/TicketFormWizard.jsx) 
 
 ![Validation blocks empty title](exercises/day13/screenshots/validation-error.png)
+
+# Day 13 Exercise 4: Submit Ticket To Backend
+
+1. [emptyTicketForm.js](support-desk-ui/src/components/emptyTicketForm.js)
+2. [api.js](support-desk-ui/src/services/api.js) (`createTicket`, `updateTicket`, `fetchTicketById`)
+3. [TicketFormWizard.jsx](support-desk-ui/src/components/TicketFormWizard.jsx) (added `mode`/`initialValues` props, editable Status in edit mode)
+4. [TicketFormPage.jsx](support-desk-ui/src/pages/TicketFormPage.jsx) (handles both create and edit via the optional `:id` route param)
+5. [App.jsx](support-desk-ui/src/App.jsx) (added `/app/tickets/:id/edit` route)
+
+**Routes:**
+- `/app/tickets/new` — create (`POST /api/v1/tickets`)
+- `/app/tickets/:id/edit` — edit (`GET` to load, `PUT /api/v1/tickets/{id}` to save)
+
+![Ticket update success](exercises/day13/screenshots/update-ticket-form.png)
+
 ---
 
 ## AI-Assisted Learning Guidelines

@@ -2,27 +2,25 @@ import { useRef, useState } from 'react';
 import FormStepIndicator from './FormStepIndicator.jsx';
 import InlineFieldError from './InlineFieldError.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
+import { emptyTicketForm } from './emptyTicketForm.js';
 
 const PRIORITY_OPTIONS = ['LOW', 'MEDIUM', 'HIGH'];
-
-const emptyTicketForm = {
-  title: '',
-  description: '',
-  category: '',
-  priority: 'LOW',
-  status: 'OPEN'
-};
+const STATUS_OPTIONS = ['OPEN', 'IN_PROGRESS', 'CLOSED'];
 
 export default function TicketFormWizard({
+  mode = 'create',
+  initialValues = emptyTicketForm,
   onSubmit,
   saving = false,
   serverError = '',
   successMessage = ''
 }) {
   const [step, setStep] = useState(1);
-  const [formValues, setFormValues] = useState(emptyTicketForm);
+  const [formValues, setFormValues] = useState({ ...emptyTicketForm, ...initialValues });
   const [fieldErrors, setFieldErrors] = useState({});
   const reviewCheckboxRef = useRef(null);
+
+  const isEditMode = mode === 'edit';
 
   function updateField(fieldName, value) {
     setFormValues((current) => ({
@@ -56,6 +54,10 @@ export default function TicketFormWizard({
     if (stepToValidate === 2) {
       if (!PRIORITY_OPTIONS.includes(formValues.priority)) {
         errors.priority = 'Choose a valid priority.';
+      }
+
+      if (isEditMode && !STATUS_OPTIONS.includes(formValues.status)) {
+        errors.status = 'Choose a valid status.';
       }
     }
 
@@ -100,7 +102,7 @@ export default function TicketFormWizard({
     <form className="card ticket-form" onSubmit={handleSubmit} noValidate>
       <div className="section-heading">
         <p className="eyebrow">Day 13 form wizard</p>
-        <h2>Create Ticket</h2>
+        <h2>{isEditMode ? 'Update Ticket' : 'Create Ticket'}</h2>
         <p>Controlled inputs, client-side validation, inline errors and an uncontrolled review checkbox.</p>
       </div>
 
@@ -165,9 +167,20 @@ export default function TicketFormWizard({
 
           <label htmlFor="status">
             Status
-            <select id="status" value={formValues.status} disabled>
-              <option value="OPEN">OPEN</option>
+            <select
+              id="status"
+              value={formValues.status}
+              onChange={(event) => updateField('status', event.target.value)}
+              disabled={!isEditMode}
+              aria-describedby="status-error"
+            >
+              {isEditMode
+                ? STATUS_OPTIONS.map((status) => (
+                    <option key={status} value={status}>{status}</option>
+                  ))
+                : <option value="OPEN">OPEN</option>}
             </select>
+            {isEditMode && <InlineFieldError message={fieldErrors.status} />}
           </label>
         </section>
       )}
@@ -206,7 +219,7 @@ export default function TicketFormWizard({
 
         {step === 3 && (
           <button type="submit" className="button-link" disabled={saving}>
-            {saving ? 'Saving...' : 'Create Ticket'}
+            {saving ? 'Saving...' : isEditMode ? 'Update Ticket' : 'Create Ticket'}
           </button>
         )}
       </div>

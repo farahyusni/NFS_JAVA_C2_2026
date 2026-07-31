@@ -17,6 +17,7 @@ export default function App() {
         <Route path="dashboard" element={<DashboardPage />} />
         <Route path="tickets" element={<TicketsPage />} />
         <Route path="tickets/new" element={<TicketFormPage />} />
+        <Route path="tickets/:id/edit" element={<TicketFormPage />} />
         <Route path="reports" element={<ReportsPage />} />
       </Route>
     </Routes>
