@@ -31,3 +31,16 @@ export async function loginRequest(email, password) {
 
   return parseJsonResponse(response);
 }
+
+export async function createTicketRequest(token, ticket) {
+  const response = await fetch('/api/v1/tickets', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(ticket)
+  });
+
+  return parseJsonResponse(response);
+}

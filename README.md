@@ -475,6 +475,29 @@ Q6: What would change when you connect this UI to the protected backend API late
 # Day 12 Exercise 4: Protect Ticket Pages
 ![protected tickets](exercises/day12/screenshots/protected-ticket.png)
 
+
+
+# Day 13 Exercise 1: Add Backend Update Endpoint
+
+1. [UpdateTicketRequest.java](support-desk-api/src/main/java/com/example/supportdesk/dto/UpdateTicketRequest.java)
+2. [TicketService.java](support-desk-api/src/main/java/com/example/supportdesk/service/TicketService.java) (added `updateTicket`)
+3. [TicketV1Controller.java](support-desk-api/src/main/java/com/example/supportdesk/controller/TicketV1Controller.java) (added `PUT /api/v1/tickets/{id}`)
+
+**Test file:** [day13-update-ticket.http](support-desk-api/requests/day13-update-ticket.http)
+
+**PUT /api/v1/tickets/{id} (valid request)**
+
+![Update ticket success](exercises/day13/screenshots/update-ticket-success.png)
+
+# Day 13 Exercise 2: Create Ticket Form Page
+
+1. [TicketFormWizard.jsx](support-desk-ui/src/components/TicketFormWizard.jsx)
+2. [TicketFormPage.jsx](support-desk-ui/src/pages/TicketFormPage.jsx)
+3. [api.js](support-desk-ui/src/services/api.js) (added `createTicketRequest`)
+4. [App.jsx](support-desk-ui/src/App.jsx) (added `/app/tickets/new` route)
+
+![New ticket form](exercises/day13/screenshots/new-ticket-form.png)
+
 ---
 
 ## AI-Assisted Learning Guidelines
