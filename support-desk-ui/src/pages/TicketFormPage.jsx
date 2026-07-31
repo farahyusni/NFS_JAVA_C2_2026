@@ -8,30 +8,30 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { createTicket, fetchTicketById, updateTicket } from '../services/api.js';
 
 export default function TicketFormPage() {
-  const { id } = useParams();
+  const { ticketId  } = useParams();
   const navigate = useNavigate();
   const { token, user } = useAuth();
   const [initialValues, setInitialValues] = useState(emptyTicketForm);
-  const [loading, setLoading] = useState(Boolean(id));
+  const [loading, setLoading] = useState(Boolean(ticketId));
   const [loadError, setLoadError] = useState('');
   const [saving, setSaving] = useState(false);
   const [serverError, setServerError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  const isEditMode = Boolean(id);
+  const isEditMode = Boolean(ticketId);
 
   useEffect(() => {
     let ignore = false;
 
     async function loadTicketForEdit() {
-      if (!id) {
+      if (!ticketId) {
         return;
       }
 
       try {
         setLoading(true);
         setLoadError('');
-        const ticket = await fetchTicketById(id, token);
+        const ticket = await fetchTicketById(ticketId, token);
 
         if (!ignore) {
           setInitialValues({
@@ -59,7 +59,7 @@ export default function TicketFormPage() {
     return () => {
       ignore = true;
     };
-  }, [id, token]);
+  }, [ticketId, token]);
 
   async function handleSubmit(payload) {
     try {
@@ -68,7 +68,7 @@ export default function TicketFormPage() {
       setSuccessMessage('');
 
       if (isEditMode) {
-        await updateTicket(id, token, payload);
+        await updateTicket(ticketId, token, payload);
         setSuccessMessage('Ticket updated successfully.');
       } else {
         await createTicket(token, {
@@ -115,7 +115,7 @@ export default function TicketFormPage() {
       </section>
 
       <TicketFormWizard
-        key={id || 'create'}
+        key={ticketId || 'create'}
         mode={isEditMode ? 'edit' : 'create'}
         initialValues={initialValues}
         onSubmit={handleSubmit}

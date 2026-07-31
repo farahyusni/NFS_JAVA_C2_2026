@@ -518,6 +518,16 @@ Q6: What would change when you connect this UI to the protected backend API late
 
 ![Ticket update success](exercises/day13/screenshots/update-ticket-form.png)
 
+# Day 13 Exercise 5: Add Edit Ticket Flow
+
+1. [api.js](support-desk-ui/src/services/api.js) (added `fetchTickets`)
+2. [TicketsPage.jsx](support-desk-ui/src/pages/TicketsPage.jsx) (now fetches real tickets from the backend instead of `sampleTickets.js`, with loading/error states)
+3. [TicketDetail.jsx](support-desk-ui/src/components/TicketDetail.jsx) (added an "Edit Ticket" link to the selected ticket)
+4. [App.jsx](support-desk-ui/src/App.jsx) (route param renamed `:id` → `:ticketId`)
+5. [TicketFormPage.jsx](support-desk-ui/src/pages/TicketFormPage.jsx) (reads `:ticketId` from the route)
+
+**Route:** `/app/tickets/:ticketId/edit`
+
 ---
 
 ## AI-Assisted Learning Guidelines

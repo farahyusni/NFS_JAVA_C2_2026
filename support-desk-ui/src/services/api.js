@@ -69,3 +69,12 @@ export async function fetchTicketById(id, token) {
   return parseJsonResponse(response);
 }
 
+export async function fetchTickets(token) {
+  const response = await fetch('/api/v1/tickets', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  return parseJsonResponse(response);
+}
