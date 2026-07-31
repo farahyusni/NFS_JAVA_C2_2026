@@ -498,6 +498,11 @@ Q6: What would change when you connect this UI to the protected backend API late
 
 ![New ticket form](exercises/day13/screenshots/new-ticket-form.png)
 
+# Day 13 Exercise 3: Client-Side Validation
+
+**File:** [TicketFormWizard.jsx](support-desk-ui/src/components/TicketFormWizard.jsx) 
+
+![Validation blocks empty title](exercises/day13/screenshots/validation-error.png)
 ---
 
 ## AI-Assisted Learning Guidelines
