@@ -523,3 +523,11 @@ main {
   outline: none;
   border-color: var(--accent);
 }
+
+.cache-status {
+  flex: 1 1 100%;
+  margin: 4px 0 0;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text);
+}

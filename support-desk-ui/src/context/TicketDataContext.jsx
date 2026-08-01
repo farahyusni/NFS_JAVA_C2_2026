@@ -15,6 +15,9 @@ const initialState = {
   selectedId: null,
   loading: true,
   error: "",
+  cache: {},
+  reloadToken: 0,
+  source: null,
   pagination: {
     page: 0,
     size: 5,
@@ -41,6 +44,8 @@ function ticketReducer(state, action) {
           totalPages: action.payload.totalPages,
           totalElements: action.payload.totalElements,
         },
+        cache: { ...state.cache, [action.key]: action.payload },
+        source: "backend",
       };
 
     case "LOAD_ERROR":
@@ -77,6 +82,29 @@ function ticketReducer(state, action) {
         ...state,
         pagination: { ...state.pagination, direction: action.payload, page: 0 },
       };
+    case "LOAD_FROM_CACHE": {
+      const cached = state.cache[action.key];
+      return {
+        ...state,
+        loading: false,
+        error: "",
+        tickets: cached.content,
+        selectedId: cached.content[0]?.id ?? null,
+        pagination: {
+          ...state.pagination,
+          totalPages: cached.totalPages,
+          totalElements: cached.totalElements,
+        },
+        source: "cache",
+      };
+    }
+    case "FORCE_RELOAD": {
+      const { page, size, sortBy, direction } = state.pagination;
+      const key = `${page}|${size}|${sortBy}|${direction}`;
+      const nextCache = { ...state.cache };
+      delete nextCache[key];
+      return { ...state, cache: nextCache, reloadToken: state.reloadToken + 1 };
+    }
     default:
       return state;
   }
@@ -89,6 +117,13 @@ export function TicketDataProvider({ children }) {
   useEffect(() => {
     let ignore = false;
     const { page, size, sortBy, direction } = state.pagination;
+    const key = `${page}|${size}|${sortBy}|${direction}`;
+    const cached = state.cache[key];
+
+    if (cached) {
+      dispatch({ type: "LOAD_FROM_CACHE", key });
+      return;
+    }
 
     async function loadTickets() {
       dispatch({ type: "LOAD_START" });
@@ -100,7 +135,7 @@ export function TicketDataProvider({ children }) {
           direction,
         });
         if (!ignore) {
-          dispatch({ type: "LOAD_SUCCESS", payload: data });
+          dispatch({ type: "LOAD_SUCCESS", payload: data, key });
         }
       } catch (err) {
         if (!ignore) {
@@ -123,6 +158,7 @@ export function TicketDataProvider({ children }) {
     state.pagination.size,
     state.pagination.sortBy,
     state.pagination.direction,
+    state.reloadToken,
   ]);
 
   const filteredTickets = state.tickets.filter((ticket) => {
@@ -157,6 +193,8 @@ export function TicketDataProvider({ children }) {
       direction: state.pagination.direction,
       totalPages: state.pagination.totalPages,
       totalElements: state.pagination.totalElements,
+      source: state.source,
+      refresh: () => dispatch({ type: "FORCE_RELOAD" }),
       nextPage: () =>
         dispatch({
           type: "SET_PAGE",

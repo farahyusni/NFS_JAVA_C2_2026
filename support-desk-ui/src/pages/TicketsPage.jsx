@@ -28,6 +28,8 @@ export default function TicketsPage() {
     setPageSize,
     setSortBy,
     setSortDirection,
+    source,
+    refresh,
   } = useTicketData();
 
   if (loading) {
@@ -61,6 +63,9 @@ export default function TicketsPage() {
             disabled={page + 1 >= totalPages}
           >
             Next
+          </button>
+          <button type="button" onClick={refresh}>
+            Refresh
           </button>
         </div>
 
@@ -97,6 +102,12 @@ export default function TicketsPage() {
           </select>
         </label>
       </section>
+
+      {source && (
+        <p className="cache-status">
+          {source === "cache" ? "Loaded from cache" : "Fetched from backend"}
+        </p>
+      )}
 
       <TicketList
         tickets={filteredTickets}

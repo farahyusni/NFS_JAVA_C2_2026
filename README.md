@@ -546,6 +546,10 @@ Q6: What would change when you connect this UI to the protected backend API late
 3. [TicketDataContext.jsx](support-desk-ui/src/context/TicketDataContext.jsx) (pagination/sort state + `SET_PAGE`/`SET_PAGE_SIZE`/`SET_SORT_BY`/`SET_SORT_DIRECTION` actions, fetches paged data on change)
 4. [TicketsPage.jsx](support-desk-ui/src/pages/TicketsPage.jsx) (added page/size/sort controls; search and status filter still apply client-side to the loaded page)
 
+# Day 14 Exercise 4: Add Simple Page Cache
+
+1. [TicketDataContext.jsx](support-desk-ui/src/context/TicketDataContext.jsx) (added `cache`, `reloadToken`, `source` to state; `LOAD_FROM_CACHE`/`FORCE_RELOAD` actions; cache keyed on `page|size|sortBy|direction`)
+2. [TicketsPage.jsx](support-desk-ui/src/pages/TicketsPage.jsx) (added Refresh button and "Loaded from cache" / "Fetched from backend" status message)
 ---
 
 ## AI-Assisted Learning Guidelines
