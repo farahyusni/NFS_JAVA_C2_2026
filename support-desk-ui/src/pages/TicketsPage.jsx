@@ -30,6 +30,8 @@ export default function TicketsPage() {
     setSortDirection,
     source,
     refresh,
+    statusError,
+    updateTicketStatus,
   } = useTicketData();
 
   if (loading) {
@@ -114,7 +116,13 @@ export default function TicketsPage() {
         selectedTicketId={selectedId}
         onSelectTicket={(ticket) => selectTicket(ticket.id)}
       />
-      <TicketDetail ticket={selectedTicket} />
+      <TicketDetail
+        ticket={selectedTicket}
+        statusError={statusError}
+        onStatusChange={(status) =>
+          updateTicketStatus(selectedTicket.id, status)
+        }
+      />
     </>
   );
 }

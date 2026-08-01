@@ -550,6 +550,14 @@ Q6: What would change when you connect this UI to the protected backend API late
 
 1. [TicketDataContext.jsx](support-desk-ui/src/context/TicketDataContext.jsx) (added `cache`, `reloadToken`, `source` to state; `LOAD_FROM_CACHE`/`FORCE_RELOAD` actions; cache keyed on `page|size|sortBy|direction`)
 2. [TicketsPage.jsx](support-desk-ui/src/pages/TicketsPage.jsx) (added Refresh button and "Loaded from cache" / "Fetched from backend" status message)
+
+# Day 14 Exercise 5: Ticket Status Update
+
+1. [TicketDataContext.jsx](support-desk-ui/src/context/TicketDataContext.jsx) (added `updateTicketStatus`, `UPDATE_TICKET_OPTIMISTIC`/`SET_TICKET`/`SET_STATUS_ERROR` actions)
+2. [TicketDetail.jsx](support-desk-ui/src/components/TicketDetail.jsx) (added OPEN/IN_PROGRESS/CLOSED quick-status buttons)
+3. [TicketsPage.jsx](support-desk-ui/src/pages/TicketsPage.jsx) (wires `updateTicketStatus`/`statusError` into `TicketDetail`)
+
+
 ---
 
 ## AI-Assisted Learning Guidelines

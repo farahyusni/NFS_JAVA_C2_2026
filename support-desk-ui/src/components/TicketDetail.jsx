@@ -3,7 +3,9 @@ import EmptyState from "./EmptyState";
 import PriorityBadge from "./PriorityBadge";
 import { Link } from "react-router";
 
-export default function TicketDetail({ ticket }) {
+const STATUSES = ["OPEN", "IN_PROGRESS", "CLOSED"];
+
+export default function TicketDetail({ ticket, onStatusChange, statusError }) {
   if (!ticket) {
     return <EmptyState message="Select a ticket to view more information." />;
   }
@@ -41,6 +43,24 @@ export default function TicketDetail({ ticket }) {
           <dd>{ticket.createdAt}</dd>
         </div>
       </dl>
+
+      <div className="status-actions" role="group" aria-label="Change ticket status">
+        {STATUSES.map((status) => (
+          <button
+            key={status}
+            type="button"
+            data-status={status}
+            className={status === ticket.status ? "status-action active" : "status-action"}
+            disabled={status === ticket.status}
+            onClick={() => onStatusChange(status)}
+          >
+            {status.replace("_", " ")}
+          </button>
+        ))}
+      </div>
+
+      {statusError && <p className="message error-message">{statusError}</p>}
+
       <div className="action-row">
         <Link className="button-link" to={`/app/tickets/${ticket.id}/edit`}>
           Edit Ticket

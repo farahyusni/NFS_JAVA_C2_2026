@@ -531,3 +531,39 @@ main {
   font-style: italic;
   color: var(--text);
 }
+
+.status-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.status-action {
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.status-action:hover:not(:disabled) {
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+.status-action:disabled {
+  cursor: default;
+}
+
+.status-action.active {
+  border-color: transparent;
+}
+
+.status-action.active[data-status="OPEN"] { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+.status-action.active[data-status="IN_PROGRESS"] { background: rgba(234, 179, 8, 0.15); color: #eab308; }
+.status-action.active[data-status="CLOSED"] { background: rgba(34, 197, 94, 0.15); color: #22c55e; }

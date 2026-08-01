@@ -6,7 +6,7 @@ import {
   useReducer,
 } from "react";
 import { useAuth } from "./AuthContext.jsx";
-import { fetchPagedTickets } from "../services/api.js";
+import { fetchPagedTickets, updateTicket } from "../services/api.js";
 
 const TicketDataContext = createContext(null);
 
@@ -18,6 +18,7 @@ const initialState = {
   cache: {},
   reloadToken: 0,
   source: null,
+  statusError: "",
   pagination: {
     page: 0,
     size: 5,
@@ -105,6 +106,26 @@ function ticketReducer(state, action) {
       delete nextCache[key];
       return { ...state, cache: nextCache, reloadToken: state.reloadToken + 1 };
     }
+    case "UPDATE_TICKET_OPTIMISTIC":
+      return {
+        ...state,
+        statusError: "",
+        tickets: state.tickets.map((ticket) =>
+          ticket.id === action.id
+            ? { ...ticket, status: action.status }
+            : ticket,
+        ),
+      };
+    case "SET_TICKET":
+      return {
+        ...state,
+        tickets: state.tickets.map((ticket) =>
+          ticket.id === action.payload.id ? action.payload : ticket,
+        ),
+      };
+    case "SET_STATUS_ERROR":
+      return { ...state, statusError: action.payload };
+
     default:
       return state;
   }
@@ -161,6 +182,32 @@ export function TicketDataProvider({ children }) {
     state.reloadToken,
   ]);
 
+  async function updateTicketStatus(ticketId, status) {
+    const backup = state.tickets.find((ticket) => ticket.id === ticketId);
+    if (!backup || backup.status === status) {
+      return;
+    }
+
+    dispatch({ type: "UPDATE_TICKET_OPTIMISTIC", id: ticketId, status });
+
+    try {
+      const updated = await updateTicket(ticketId, token, {
+        title: backup.title,
+        description: backup.description,
+        category: backup.category,
+        priority: backup.priority,
+        status,
+      });
+      dispatch({ type: "SET_TICKET", payload: updated });
+    } catch (err) {
+      dispatch({ type: "SET_TICKET", payload: backup });
+      dispatch({
+        type: "SET_STATUS_ERROR",
+        payload: err.message || "Could not update ticket status.",
+      });
+    }
+  }
+
   const filteredTickets = state.tickets.filter((ticket) => {
     const matchesSearch =
       ticket.title
@@ -194,6 +241,8 @@ export function TicketDataProvider({ children }) {
       totalPages: state.pagination.totalPages,
       totalElements: state.pagination.totalElements,
       source: state.source,
+      statusError: state.statusError, 
+      updateTicketStatus,
       refresh: () => dispatch({ type: "FORCE_RELOAD" }),
       nextPage: () =>
         dispatch({
