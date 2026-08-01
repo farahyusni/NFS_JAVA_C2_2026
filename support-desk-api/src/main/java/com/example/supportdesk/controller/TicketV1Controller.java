@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @RestController
 @RequestMapping("/api/v1/tickets")
@@ -36,6 +40,22 @@ public class TicketV1Controller {
         return ticketService.getTickets(status, priority, category);
     }
 
+    @GetMapping("/paged")
+    public Page<TicketResponse> getPagedTickets(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String direction) {
+
+        Sort sort = direction.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return ticketService.getPagedTickets(pageable);
+    }
+
     @GetMapping("/{id}")
     public TicketResponse getTicketById(@PathVariable String id) {
         return ticketService.getTicketById(id);
@@ -46,7 +66,7 @@ public class TicketV1Controller {
     public TicketResponse createTicket(@Valid @RequestBody CreateTicketRequest request) {
         return ticketService.createTicket(request);
     }
-    
+
     @PutMapping("/{id}")
     public TicketResponse updateTicket(
             @PathVariable String id,

@@ -539,6 +539,12 @@ Q6: What would change when you connect this UI to the protected backend API late
 2. [TicketsPage.jsx](support-desk-ui/src/pages/TicketsPage.jsx) (now reads tickets, filters, and selection from `useTicketData()` instead of local `useState`/`useEffect`)
 3. [App.jsx](support-desk-ui/src/App.jsx) (wrapped the `tickets` route in `TicketDataProvider`)
 
+# Day 14 Exercise 3: Add Pagination And Filters
+
+1. [TicketV1Controller.java](support-desk-api/src/main/java/com/example/supportdesk/controller/TicketV1Controller.java) (added `GET /api/v1/tickets/paged`)
+2. [api.js](support-desk-ui/src/services/api.js) (added `fetchPagedTickets`)
+3. [TicketDataContext.jsx](support-desk-ui/src/context/TicketDataContext.jsx) (pagination/sort state + `SET_PAGE`/`SET_PAGE_SIZE`/`SET_SORT_BY`/`SET_SORT_DIRECTION` actions, fetches paged data on change)
+4. [TicketsPage.jsx](support-desk-ui/src/pages/TicketsPage.jsx) (added page/size/sort controls; search and status filter still apply client-side to the loaded page)
 
 ---
 

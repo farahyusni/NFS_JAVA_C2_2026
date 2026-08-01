@@ -1,6 +1,12 @@
-import { createContext, useContext, useEffect, useMemo, useReducer } from 'react';
-import { useAuth } from './AuthContext.jsx';
-import { fetchTickets } from '../services/api.js';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useReducer,
+} from "react";
+import { useAuth } from "./AuthContext.jsx";
+import { fetchPagedTickets } from "../services/api.js";
 
 const TicketDataContext = createContext(null);
 
@@ -8,30 +14,69 @@ const initialState = {
   tickets: [],
   selectedId: null,
   loading: true,
-  error: '',
-  page: { number: 0, totalPages: 1 },
-  filters: { searchText: '', statusFilter: 'ALL' }
+  error: "",
+  pagination: {
+    page: 0,
+    size: 5,
+    sortBy: "createdAt",
+    direction: "desc",
+    totalPages: 1,
+    totalElements: 0,
+  },
+  filters: { searchText: "", statusFilter: "ALL" },
 };
 
 function ticketReducer(state, action) {
   switch (action.type) {
-    case 'LOAD_START':
-      return { ...state, loading: true, error: '' };
-    case 'LOAD_SUCCESS':
+    case "LOAD_START":
+      return { ...state, loading: true, error: "" };
+    case "LOAD_SUCCESS":
       return {
         ...state,
         loading: false,
-        tickets: action.payload,
-        selectedId: action.payload[0]?.id ?? null
+        tickets: action.payload.content,
+        selectedId: action.payload.content[0]?.id ?? null,
+        pagination: {
+          ...state.pagination,
+          totalPages: action.payload.totalPages,
+          totalElements: action.payload.totalElements,
+        },
       };
-    case 'LOAD_ERROR':
+
+    case "LOAD_ERROR":
       return { ...state, loading: false, error: action.payload };
-    case 'SET_SEARCH_TEXT':
-      return { ...state, filters: { ...state.filters, searchText: action.payload } };
-    case 'SET_STATUS_FILTER':
-      return { ...state, filters: { ...state.filters, statusFilter: action.payload } };
-    case 'SELECT_TICKET':
+    case "SET_SEARCH_TEXT":
+      return {
+        ...state,
+        filters: { ...state.filters, searchText: action.payload },
+      };
+    case "SET_STATUS_FILTER":
+      return {
+        ...state,
+        filters: { ...state.filters, statusFilter: action.payload },
+      };
+    case "SELECT_TICKET":
       return { ...state, selectedId: action.payload };
+    case "SET_PAGE":
+      return {
+        ...state,
+        pagination: { ...state.pagination, page: action.payload },
+      };
+    case "SET_PAGE_SIZE":
+      return {
+        ...state,
+        pagination: { ...state.pagination, size: action.payload, page: 0 },
+      };
+    case "SET_SORT_BY":
+      return {
+        ...state,
+        pagination: { ...state.pagination, sortBy: action.payload, page: 0 },
+      };
+    case "SET_SORT_DIRECTION":
+      return {
+        ...state,
+        pagination: { ...state.pagination, direction: action.payload, page: 0 },
+      };
     default:
       return state;
   }
@@ -43,17 +88,26 @@ export function TicketDataProvider({ children }) {
 
   useEffect(() => {
     let ignore = false;
+    const { page, size, sortBy, direction } = state.pagination;
 
     async function loadTickets() {
-      dispatch({ type: 'LOAD_START' });
+      dispatch({ type: "LOAD_START" });
       try {
-        const data = await fetchTickets(token);
+        const data = await fetchPagedTickets(token, {
+          page,
+          size,
+          sortBy,
+          direction,
+        });
         if (!ignore) {
-          dispatch({ type: 'LOAD_SUCCESS', payload: data });
+          dispatch({ type: "LOAD_SUCCESS", payload: data });
         }
       } catch (err) {
         if (!ignore) {
-          dispatch({ type: 'LOAD_ERROR', payload: err.message || 'Could not load tickets.' });
+          dispatch({
+            type: "LOAD_ERROR",
+            payload: err.message || "Could not load tickets.",
+          });
         }
       }
     }
@@ -63,17 +117,31 @@ export function TicketDataProvider({ children }) {
     return () => {
       ignore = true;
     };
-  }, [token]);
+  }, [
+    token,
+    state.pagination.page,
+    state.pagination.size,
+    state.pagination.sortBy,
+    state.pagination.direction,
+  ]);
 
   const filteredTickets = state.tickets.filter((ticket) => {
     const matchesSearch =
-      ticket.title.toLowerCase().includes(state.filters.searchText.toLowerCase()) ||
-      ticket.category.toLowerCase().includes(state.filters.searchText.toLowerCase());
-    const matchesStatus = state.filters.statusFilter === 'ALL' || ticket.status === state.filters.statusFilter;
+      ticket.title
+        .toLowerCase()
+        .includes(state.filters.searchText.toLowerCase()) ||
+      ticket.category
+        .toLowerCase()
+        .includes(state.filters.searchText.toLowerCase());
+    const matchesStatus =
+      state.filters.statusFilter === "ALL" ||
+      ticket.status === state.filters.statusFilter;
     return matchesSearch && matchesStatus;
   });
 
-  const selectedTicket = state.tickets.find((ticket) => ticket.id === state.selectedId);
+  const selectedTicket = state.tickets.find(
+    (ticket) => ticket.id === state.selectedId,
+  );
 
   const value = useMemo(
     () => ({
@@ -83,24 +151,52 @@ export function TicketDataProvider({ children }) {
       selectedId: state.selectedId,
       loading: state.loading,
       error: state.error,
-      page: state.page,
+      page: state.pagination.page,
+      pageSize: state.pagination.size,
+      sortBy: state.pagination.sortBy,
+      direction: state.pagination.direction,
+      totalPages: state.pagination.totalPages,
+      totalElements: state.pagination.totalElements,
+      nextPage: () =>
+        dispatch({
+          type: "SET_PAGE",
+          payload: Math.min(
+            state.pagination.page + 1,
+            state.pagination.totalPages - 1,
+          ),
+        }),
+      prevPage: () =>
+        dispatch({
+          type: "SET_PAGE",
+          payload: Math.max(state.pagination.page - 1, 0),
+        }),
+      setPageSize: (size) => dispatch({ type: "SET_PAGE_SIZE", payload: size }),
+      setSortBy: (sortBy) => dispatch({ type: "SET_SORT_BY", payload: sortBy }),
+      setSortDirection: (direction) =>
+        dispatch({ type: "SET_SORT_DIRECTION", payload: direction }),
       searchText: state.filters.searchText,
       statusFilter: state.filters.statusFilter,
-      setSearchText: (value) => dispatch({ type: 'SET_SEARCH_TEXT', payload: value }),
-      setStatusFilter: (value) => dispatch({ type: 'SET_STATUS_FILTER', payload: value }),
-      selectTicket: (id) => dispatch({ type: 'SELECT_TICKET', payload: id })
+      setSearchText: (value) =>
+        dispatch({ type: "SET_SEARCH_TEXT", payload: value }),
+      setStatusFilter: (value) =>
+        dispatch({ type: "SET_STATUS_FILTER", payload: value }),
+      selectTicket: (id) => dispatch({ type: "SELECT_TICKET", payload: id }),
     }),
-    [state, filteredTickets, selectedTicket]
+    [state, filteredTickets, selectedTicket],
   );
 
-  return <TicketDataContext.Provider value={value}>{children}</TicketDataContext.Provider>;
+  return (
+    <TicketDataContext.Provider value={value}>
+      {children}
+    </TicketDataContext.Provider>
+  );
 }
 
 export function useTicketData() {
   const value = useContext(TicketDataContext);
 
   if (!value) {
-    throw new Error('useTicketData must be used inside TicketDataProvider');
+    throw new Error("useTicketData must be used inside TicketDataProvider");
   }
 
   return value;

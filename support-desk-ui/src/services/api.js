@@ -34,3 +34,8 @@ export function fetchTicketById(id, token) {
 export function fetchTickets(token) {
   return apiRequest('/api/v1/tickets', { token });
 }
+
+export function fetchPagedTickets(token, { page = 0, size = 5, sortBy = 'createdAt', direction = 'desc' } = {}) {
+  const params = new URLSearchParams({ page, size, sortBy, direction });
+  return apiRequest(`/api/v1/tickets/paged?${params.toString()}`, { token });
+}
