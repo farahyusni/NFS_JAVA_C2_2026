@@ -7,6 +7,7 @@ import TicketFormPage from './pages/TicketFormPage';
 import ReportsPage from './pages/ReportsPage';
 import AppShell from './components/AppShell';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+import { TicketDataProvider } from './context/TicketDataContext.jsx';
 
 
 export default function App() {
@@ -15,7 +16,7 @@ export default function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/app" element={<ProtectedRoute> <AppShell /> </ProtectedRoute>} >
         <Route path="dashboard" element={<DashboardPage />} />
-        <Route path="tickets" element={<TicketsPage />} />
+        <Route path="tickets" element={<TicketDataProvider><TicketsPage /></TicketDataProvider>} />
         <Route path="tickets/new" element={<TicketFormPage />} />
         <Route path="tickets/:ticketId/edit" element={<TicketFormPage />} />
         <Route path="reports" element={<ReportsPage />} />

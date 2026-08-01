@@ -533,6 +533,12 @@ Q6: What would change when you connect this UI to the protected backend API late
 1. [httpClient.js](support-desk-ui/src/services/httpClient.js) (new — `apiRequest(path, options)`)
 2. [api.js](support-desk-ui/src/services/api.js) (refactored every function to call `apiRequest` instead of `fetch` directly)
 
+# Day 14 Exercise 2: Ticket Data Context And Reducer
+
+1. [TicketDataContext.jsx](support-desk-ui/src/context/TicketDataContext.jsx) (new — `useReducer` with `LOAD_START`/`LOAD_SUCCESS`/`LOAD_ERROR`/`SET_SEARCH_TEXT`/`SET_STATUS_FILTER`/`SELECT_TICKET`)
+2. [TicketsPage.jsx](support-desk-ui/src/pages/TicketsPage.jsx) (now reads tickets, filters, and selection from `useTicketData()` instead of local `useState`/`useEffect`)
+3. [App.jsx](support-desk-ui/src/App.jsx) (wrapped the `tickets` route in `TicketDataProvider`)
+
 
 ---
 
