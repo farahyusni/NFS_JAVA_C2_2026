@@ -1,80 +1,36 @@
-async function parseJsonResponse(response) {
-  const contentType = response.headers.get('content-type') ?? '';
-  const body = contentType.includes('application/json') ? await response.json() : null;
+import { apiRequest } from './httpClient.js';
 
-  if (!response.ok) {
-    const message = body?.message || `Request failed with status ${response.status}`;
-    throw new Error(message);
-  }
-
-  return body;
+export function fetchApiInfo() {
+  return apiRequest('/api/v1/info');
 }
 
-export async function fetchApiInfo() {
-  const response = await fetch('/api/v1/info');
-
-  if (!response.ok) {
-    throw new Error(`API info request failed with status ${response.status}`);
-  }
-
-  return response.json();
-}
-
-export async function loginRequest(email, password) {
-  const response = await fetch('/api/auth/login', {
+export function loginRequest(email, password) {
+  return apiRequest('/api/auth/login', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ email, password })
+    body: { email, password }
   });
-
-  return parseJsonResponse(response);
 }
 
-export async function createTicket(token, payload) {
-  const response = await fetch('/api/v1/tickets', {
-
+export function createTicket(token, payload) {
+  return apiRequest('/api/v1/tickets', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify(payload)
+    token,
+    body: payload
   });
-
-  return parseJsonResponse(response);
 }
 
-export async function updateTicket(id, token, payload) {
-  const response = await fetch(`/api/v1/tickets/${id}`, {
+export function updateTicket(id, token, payload) {
+  return apiRequest(`/api/v1/tickets/${id}`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify(payload)
+    token,
+    body: payload
   });
-
-  return parseJsonResponse(response);
 }
 
-export async function fetchTicketById(id, token) {
-  const response = await fetch(`/api/v1/tickets/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-
-  return parseJsonResponse(response);
+export function fetchTicketById(id, token) {
+  return apiRequest(`/api/v1/tickets/${id}`, { token });
 }
 
-export async function fetchTickets(token) {
-  const response = await fetch('/api/v1/tickets', {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
-
-  return parseJsonResponse(response);
+export function fetchTickets(token) {
+  return apiRequest('/api/v1/tickets', { token });
 }

@@ -528,6 +528,12 @@ Q6: What would change when you connect this UI to the protected backend API late
 
 **Route:** `/app/tickets/:ticketId/edit`
 
+# Day 14 Exercise 1: Create API Client Layer
+
+1. [httpClient.js](support-desk-ui/src/services/httpClient.js) (new — `apiRequest(path, options)`)
+2. [api.js](support-desk-ui/src/services/api.js) (refactored every function to call `apiRequest` instead of `fetch` directly)
+
+
 ---
 
 ## AI-Assisted Learning Guidelines
