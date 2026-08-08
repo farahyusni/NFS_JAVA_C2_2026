@@ -7,6 +7,7 @@ import {
 } from "react";
 import { useAuth } from "./AuthContext.jsx";
 import { fetchPagedTickets, updateTicket } from "../services/api.js";
+import { filterTickets } from '../utils/tickets.js';
 
 const TicketDataContext = createContext(null);
 
@@ -208,20 +209,7 @@ export function TicketDataProvider({ children }) {
     }
   }
 
-  const filteredTickets = state.tickets.filter((ticket) => {
-    const matchesSearch =
-      ticket.title
-        .toLowerCase()
-        .includes(state.filters.searchText.toLowerCase()) ||
-      ticket.category
-        .toLowerCase()
-        .includes(state.filters.searchText.toLowerCase());
-    const matchesStatus =
-      state.filters.statusFilter === "ALL" ||
-      ticket.status === state.filters.statusFilter;
-    return matchesSearch && matchesStatus;
-  });
-
+const filteredTickets = filterTickets(state.tickets, state.filters.searchText, state.filters.statusFilter);
   const selectedTicket = state.tickets.find(
     (ticket) => ticket.id === state.selectedId,
   );
