@@ -28,7 +28,7 @@ export const sampleTicket = [
         description: 'Samsung monitor flickers intermittently',
         category: 'Hardware',
         priority: 'LOW',
-        status: 'RESOLVED',
+        status: 'CLOSED',
         createdBy: 'user3@example.com',
         createdAt: '2026-08-03T14:15:00'
     }

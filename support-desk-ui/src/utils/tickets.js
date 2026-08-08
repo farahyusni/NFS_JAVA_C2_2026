@@ -12,3 +12,7 @@ export function filterTickets(tickets, searchText, statusFilter) {
     return matchesStatus && matchesSearch;
   });
 }
+
+export function countByStatus(tickets, status) {
+  return tickets.filter((ticket) => ticket.status === status).length;
+}
