@@ -1,0 +1,48 @@
+### Get all tickets (no filter)
+GET http://localhost:8080/api/tickets
+
+###
+
+### Filter by status
+GET http://localhost:8080/api/tickets?status=OPEN
+
+###
+
+### Filter by priority
+GET http://localhost:8080/api/tickets?priority=HIGH
+
+###
+
+### Filter by category
+GET http://localhost:8080/api/tickets?category=Email
+
+### Paged tickets - defaults (page 0, size 5, createdAt desc)
+GET http://localhost:8080/api/tickets/paged
+
+###
+
+### Paged tickets - page 0, size 2
+GET http://localhost:8080/api/tickets/paged?page=0&size=2
+
+###
+
+### Paged tickets - page 1, size 2 (second page, per requirement #5)
+GET http://localhost:8080/api/tickets/paged?page=1&size=2
+
+###
+
+### Paged tickets - sorted by priority ascending
+GET http://localhost:8080/api/tickets/paged?page=0&size=5&sortBy=priority&direction=asc
+
+### Paged tickets - page 0, size 5 (explicit)
+GET http://localhost:8080/api/tickets/paged?page=0&size=5
+
+###
+
+### Paged tickets - page 1, size 5
+GET http://localhost:8080/api/tickets/paged?page=1&size=5
+
+###
+
+### Paged tickets - explicit sort by createdAt descending
+GET http://localhost:8080/api/tickets/paged?page=0&size=5&sortBy=createdAt&direction=desc
