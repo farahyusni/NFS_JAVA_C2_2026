@@ -22,6 +22,19 @@ describe('validateTicketFormStep', () => {
     expect(errors.category).toBe('Category is required.');
   });
 
+  it('treats whitespace-only fields as missing, not just empty strings', () => {
+    const errors = validateTicketFormStep(
+      { ...emptyFormValues, title: '   ', description: '   ', category: '   ' },
+      1,
+      false,
+      false
+    );
+
+    expect(errors.title).toBe('Title is required.');
+    expect(errors.description).toBe('Description is required.');
+    expect(errors.category).toBe('Category is required.');
+  });
+
   it('requires a valid priority on step 2 but ignores status in create mode', () => {
     const errors = validateTicketFormStep(
       { ...emptyFormValues, priority: 'URGENT', status: 'BOGUS' },
@@ -45,10 +58,16 @@ describe('validateTicketFormStep', () => {
     expect(errors.status).toBe('Choose a valid status.');
   });
 
-  it('requires the review checkbox on step 3', () => {
-    expect(validateTicketFormStep(emptyFormValues, 3, false, false).review)
-      .toBe('Please confirm that you reviewed the ticket details.');
-    expect(validateTicketFormStep(emptyFormValues, 3, true, false)).toEqual({});
+  it('blocks step 3 when the review checkbox is unchecked', () => {
+    const errors = validateTicketFormStep(emptyFormValues, 3, false, false);
+
+    expect(errors.review).toBe('Please confirm that you reviewed the ticket details.');
+  });
+
+  it('passes step 3 when the review checkbox is checked', () => {
+    const errors = validateTicketFormStep(emptyFormValues, 3, true, false);
+
+    expect(errors).toEqual({});
   });
 });
 
@@ -67,6 +86,18 @@ describe('normalizeTicketFormPayload', () => {
       priority: 'HIGH',
       status: 'OPEN'
     });
+  });
+
+  it('leaves already-clean values unchanged', () => {
+    const clean = {
+      title: 'Printer jam',
+      description: 'Paper stuck',
+      category: 'Hardware',
+      priority: 'HIGH',
+      status: 'OPEN'
+    };
+
+    expect(normalizeTicketFormPayload(clean)).toEqual(clean);
   });
 });
 

@@ -619,6 +619,18 @@ The better prompt fixes this by naming the exact file and methods, listing expli
 - Before: createTicket and updateTicket wrote field values straight from the request DTO into the Ticket model with no defensive trimming, and status/priority casing was never normalized before hitting the database — a client sending " Printer jam " or "low" would store it exactly like that. 
 - After: normalizeRequired trims whitespace on free-text fields, and normalizeStatus/normalizePriority trim and uppercase those two fields specifically, since your data model treats "HIGH" and "high" as different values (TicketFilterPanel.jsx and UpdateTicketRequest's @Pattern both hardcode the uppercase enum strings).
 - Nothing about the public contract changed: method names, parameter types, return types, TicketResponse fields, and exception type (ResourceNotFoundException → still 404) are all identical. For any request that already sends clean, correctly-cased data (which is everything in your requests/*.http files), the output is byte-for-byte the same as before — trimming an already-trimmed string and uppercasing an already-uppercase string is a no-op.
+
+# Day 16 Exercise 4 - Generate Then Harden Tests
+## what I improved from the AI draft
+1. Problem: The draft used toBeGreaterThan(0), toBeTruthy(), and toBeDefined() everywhere, these pass even if the actual error text is wrong or missing. Improved: Every assertion now checks the literal message string or the exact returned object
+
+2. Problem: The draft's step-2 test never proved that status validation is skipped in create mode. Improved: Now there are two separate tests: one confirming errors.status is undefined in create mode, one confirming it fires in edit mode.
+
+3. Problem: title: '' alone doesn't prove .trim() is actually being called. Improved: Added title: ' ' (spaces only) as a separate case to actually exercise the trim logic.
+
+4. Problem: The draft's step-3 test checked both the failure and success path in one it() block. Improved: renamed to blocks step 3 when unchecked / passes step 3 when checked so a failure immediately tells you which behavior broke.
+
+5. Problem: The draft never confirmed already-clean input passes through unchanged. Improved: added a test with pre-trimmed values to guard against accidental mutation
 ---
 
 ## AI-Assisted Learning Guidelines
