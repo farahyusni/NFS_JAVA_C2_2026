@@ -652,6 +652,27 @@ The better prompt fixes this by naming the exact file and methods, listing expli
 6. What part of AI-assisted refactoring still feels unclear?
 - Knowing when a deviation from what was asked (like the extra isEditMode param) is a genuinely necessary fix versus overengineering — right now I mostly just test it and see, which works but isn't a real rule I could explain to someone else yet.
 
+# Day 16 Exercise 7 - AI Regression Check
+
+**Regression checklist**
+
+1. Login — untouched (LoginPage.jsx, AuthContext.jsx not part of either refactor) — still returns a JWT and redirects to /app/dashboard.
+2. Protected ticket list — ProtectedRoute.jsx/TicketDataContext.jsx untouched — GET /api/v1/tickets still requires a token and renders the list.
+3. Create ticket form — TicketFormWizard.jsx changed (validation extracted) — step 1→2→3 flow and the POST payload shape (title/description/category/priority/status) must match exactly.
+4. Edit ticket form — same component, mode="edit" — status field must still be enabled/validated, existing ticket must still prefill via initialValues.
+5. API request headers — httpClient.js untouched by either refactor — Authorization: Bearer <token> still attached to every request.
+6. Validation rules — moved to ticketFormValidation.js — every inline error message text must match what it said before.
+7. 401 handling — SecurityConfig untouched — request with no token still returns 401.
+8. 403 handling — SecurityConfig untouched — USER token posting a ticket still returns 403.
+9. Unit tests — npm run test → 20 passing. mvn test only has the placeholder contextLoads() — no JUnit test exists yet for TicketService's new helpers, so backend confidence still relies on manual .http checks.
+10. E2E/manual smoke test — day15-smoke.spec.js (login → dashboard → tickets → create ticket → success message) covers the exact flow both refactors touch — rerun npm run test:e2e.
+
+**One risk AI identified**
+- While reviewing the TicketService refactor, the pasted file ended up with two `updateTicket` methods — the new refactored one and the original, un-deleted one still sitting further down the file. That's a duplicate method name that wouldn't even compile. Caught it before it reached `mvn spring-boot:run`.
+
+**One check used to confirm behaviour still works**
+- After removing the duplicate method, reran support-desk-api/requests/day13-update-ticket.http (login → get a real ticket id → PUT /api/v1/tickets/{id}) and confirmed it still returned 200 with the updated fields echoed back exactly as before the refactor.
+
 ---
 
 ## AI-Assisted Learning Guidelines
