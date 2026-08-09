@@ -602,6 +602,17 @@ Review:
 - The poor prompt gives the AI no boundaries, so it's free to rename methods, change what fields the API returns, add a library, or restructure things in ways that look "cleaner" but silently break TicketController or the frontend that calls it
 
 The better prompt fixes this by naming the exact file and methods, listing explicit constraints on what must not change, specifying expected output so you get code plus reasoning rather than just a diff, and closing with tests and review sections
+
+# Day 16 Exercise 1 - AI Refactor Safety Checklist
+1. Safe to share: service/controller/repository/DTO classes (e.g. TicketService.java, TicketController.java), React components and utils (TicketFormWizard.jsx, tickets.js), test files, and exercise markdown — none of these contain credentials.
+2. Never share as-is: application.properties — it hardcodes spring.mongodb.password=abc123 and app.jwt.secret=...day9-support-desk-demo-secret-key... (application.properties:16,30). Redact both values (replace with ***) before pasting into any AI prompt.
+3. Never share: anything under .env, IDE-local settings, or your machine's ~/.m2/settings.xml if it has real credentials — none currently exist in this repo, but keep this rule for when they do.
+4. Secrets to strip before sharing any config file: DB username/password, JWT signing secret, any real (non-seeded-demo) API tokens, and personal emails beyond the known seeded test accounts (admin@example.com, day9demo@example.com).
+5. Behaviour that must not change during any AI refactor: TicketController endpoint URLs/HTTP methods, TicketResponse/CreateTicketRequest/UpdateTicketRequest field names, HTTP status codes returned on success/404/403, and SecurityConfig's role rules (which endpoints need ADMIN vs authenticated USER).
+5. Public contracts that must not change on the frontend: route paths in App.jsx (/app/tickets, /app/tickets/new, etc.), AuthContext's supportDeskAuth storage key, and the shape of the onSubmit payload from TicketFormWizard.
+6. Tests that must still pass after any AI-suggested change: mvn test (backend), npm run test (Vitest unit/component suite), and npm run test:e2e (Playwright smoke test) in support-desk-ui.
+7. HTTP requests to manually rerun to prove nothing broke: the files in support-desk-api/requests/, especially day09-auth.http (401/403/200 role checks) and day13-update-ticket.http (edit flow).
+8. Before accepting AI output: confirm it didn't invent a repository/service method that doesn't exist, and confirm no secret value from a shared file was echoed back in the AI's response.
 ---
 
 ## AI-Assisted Learning Guidelines
