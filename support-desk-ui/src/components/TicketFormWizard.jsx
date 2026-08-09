@@ -3,9 +3,13 @@ import FormStepIndicator from './FormStepIndicator.jsx';
 import InlineFieldError from './InlineFieldError.jsx';
 import ErrorMessage from './ErrorMessage.jsx';
 import { emptyTicketForm } from './emptyTicketForm.js';
-
-const PRIORITY_OPTIONS = ['LOW', 'MEDIUM', 'HIGH'];
-const STATUS_OPTIONS = ['OPEN', 'IN_PROGRESS', 'CLOSED'];
+import {
+  PRIORITY_OPTIONS,
+  STATUS_OPTIONS,
+  validateTicketFormStep,
+  normalizeTicketFormPayload,
+  formatTicketFormLabel
+} from '../utils/ticketFormValidation.js';
 
 export default function TicketFormWizard({
   mode = 'create',
@@ -35,35 +39,12 @@ export default function TicketFormWizard({
   }
 
   function validateStep(stepToValidate) {
-    const errors = {};
-
-    if (stepToValidate === 1) {
-      if (!formValues.title.trim()) {
-        errors.title = 'Title is required.';
-      }
-
-      if (!formValues.description.trim()) {
-        errors.description = 'Description is required.';
-      }
-
-      if (!formValues.category.trim()) {
-        errors.category = 'Category is required.';
-      }
-    }
-
-    if (stepToValidate === 2) {
-      if (!PRIORITY_OPTIONS.includes(formValues.priority)) {
-        errors.priority = 'Choose a valid priority.';
-      }
-
-      if (isEditMode && !STATUS_OPTIONS.includes(formValues.status)) {
-        errors.status = 'Choose a valid status.';
-      }
-    }
-
-    if (stepToValidate === 3 && !reviewCheckboxRef.current?.checked) {
-      errors.review = 'Please confirm that you reviewed the ticket details.';
-    }
+    const errors = validateTicketFormStep(
+      formValues,
+      stepToValidate,
+      Boolean(reviewCheckboxRef.current?.checked),
+      isEditMode
+    );
 
     setFieldErrors(errors);
     return Object.keys(errors).length === 0;
@@ -87,15 +68,7 @@ export default function TicketFormWizard({
       return;
     }
 
-    const payload = {
-      title: formValues.title.trim(),
-      description: formValues.description.trim(),
-      category: formValues.category.trim(),
-      priority: formValues.priority,
-      status: formValues.status
-    };
-
-    await onSubmit(payload);
+    await onSubmit(normalizeTicketFormPayload(formValues));
   }
 
   return (
@@ -190,7 +163,7 @@ export default function TicketFormWizard({
           <div className="review-grid">
             {Object.entries(formValues).map(([key, value]) => (
               <div key={key} className="info-item">
-                <span>{formatLabel(key)}</span>
+                <span>{formatTicketFormLabel(key)}</span>
                 <strong>{value || 'Not set'}</strong>
               </div>
             ))}
@@ -225,10 +198,4 @@ export default function TicketFormWizard({
       </div>
     </form>
   );
-}
-
-function formatLabel(key) {
-  return key
-    .replace(/([A-Z])/g, ' $1')
-    .replace(/^./, (letter) => letter.toUpperCase());
 }
