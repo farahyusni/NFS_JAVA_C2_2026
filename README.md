@@ -631,6 +631,27 @@ The better prompt fixes this by naming the exact file and methods, listing expli
 4. Problem: The draft's step-3 test checked both the failure and success path in one it() block. Improved: renamed to blocks step 3 when unchecked / passes step 3 when checked so a failure immediately tells you which behavior broke.
 
 5. Problem: The draft never confirmed already-clean input passes through unchanged. Improved: added a test with pre-trimmed values to guard against accidental mutation
+
+# Day 16 Exercise 6 - AI-Assisted Coding Reflection
+
+1. What did the AI assistant help you do faster?
+- Mostly boilerplate and cross-referencing — setting up Vitest/RTL config, writing the Playwright smoke test, and spotting things like the `react-router-dom` vs `react-router` mismatch without me having to dig through package.json myself.
+
+2. What AI suggestion did you reject or change?
+- The suggested `validateTicketFormStep(formValues, stepToValidate, reviewConfirmed)` signature from the exercise sheet was kept as-is at first, but it couldn't actually replicate the create-vs-edit status check, so an extra `isEditMode` parameter got added instead of just going with the "suggested" version blindly.
+
+3. Why should developers not accept generated code blindly?
+- Because it can look right and still be broken — the TicketService refactor left a duplicate `updateTicket` method that wouldn't even compile until I caught it, and the login page had a stale seeded password that would've failed silently if I hadn't checked it against UserDataSeeder.
+
+4. What private information should never be pasted into AI tools?
+- DB passwords, JWT secrets, real tokens — found exactly this in application.properties (mongo password + JWT secret sitting in plain text) during the safety checklist exercise.
+
+5. What tests proved that your refactor preserved behaviour?
+- `npm run test` (20 passing) for the frontend validation extraction, plus rerunning day13-update-ticket.http and day09-auth.http/day09-protected-tickets.http to confirm the backend refactor didn't change status codes or role checks.
+
+6. What part of AI-assisted refactoring still feels unclear?
+- Knowing when a deviation from what was asked (like the extra isEditMode param) is a genuinely necessary fix versus overengineering — right now I mostly just test it and see, which works but isn't a real rule I could explain to someone else yet.
+
 ---
 
 ## AI-Assisted Learning Guidelines
