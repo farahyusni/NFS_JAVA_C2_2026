@@ -557,7 +557,51 @@ Q6: What would change when you connect this UI to the protected backend API late
 2. [TicketDetail.jsx](support-desk-ui/src/components/TicketDetail.jsx) (added OPEN/IN_PROGRESS/CLOSED quick-status buttons)
 3. [TicketsPage.jsx](support-desk-ui/src/pages/TicketsPage.jsx) (wires `updateTicketStatus`/`statusError` into `TicketDetail`)
 
+# Day 16 Exercise 0 - Prompt Engineering Warm-Up
+1. A poor prompt that is too vague.
+- Can you improve my TicketService class? Make it cleaner and better.
 
+2. A better developer prompt using the given structure.
+Context:
+I am working on the Support Desk Ticket API (Spring Boot). The file is
+support-desk-api/src/main/java/com/example/supportdesk/service/TicketService.java.
+It has getTickets, getTicketById, createTicket, updateTicket, and a private
+convertToResponse helper. getTickets currently uses an if/else if/else chain
+to pick a repository method based on which filter (status/priority/category)
+was passed in.
+
+Task:
+Refactor TicketService to reduce duplication and improve readability,
+specifically the filter-selection logic in getTickets and any other
+repeated patterns you notice.
+
+Constraints:
+- Do not change public method names or signatures (getTickets, getTicketById,
+  createTicket, updateTicket, getPagedTickets).
+- Do not change the TicketController endpoint URLs or HTTP methods.
+- Do not change TicketResponse, CreateTicketRequest, or UpdateTicketRequest fields.
+- Do not change ResourceNotFoundException usage or its resulting HTTP status.
+- Do not add new dependencies or libraries.
+- Keep the code readable for a beginner Java developer.
+
+Expected output:
+1. The refactored TicketService.java
+2. A short explanation of each helper method you introduced and why
+
+Tests:
+- List the existing .http requests in support-desk-api/requests/ I should
+  rerun to confirm behaviour is unchanged (e.g. day13-update-ticket.http)
+- Tell me if any new unit test would be worth adding for the extracted logic
+
+Review:
+- Confirm you did not rename any public method used by TicketController
+- Confirm you did not change what getTickets returns for a given filter combination
+- List any risk you introduced, even minor ones
+
+3. Why the second prompt is safer
+- The poor prompt gives the AI no boundaries, so it's free to rename methods, change what fields the API returns, add a library, or restructure things in ways that look "cleaner" but silently break TicketController or the frontend that calls it
+
+The better prompt fixes this by naming the exact file and methods, listing explicit constraints on what must not change, specifying expected output so you get code plus reasoning rather than just a diff, and closing with tests and review sections
 ---
 
 ## AI-Assisted Learning Guidelines
