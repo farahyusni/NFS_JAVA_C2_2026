@@ -1,0 +1,80 @@
+### 1. Health endpoint is public
+GET http://localhost:8080/api/health
+
+###
+
+### 2. Ticket endpoint without token returns 401
+GET http://localhost:8080/api/tickets
+
+###
+
+### 3. Register user returns token
+# @name register
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Day9 Demo User",
+  "email": "day9demo@example.com",
+  "password": "password123"
+}
+
+###
+
+### 4. Login user returns token
+# @name loginUser
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "day9demo@example.com",
+  "password": "password123"
+}
+
+###
+
+### 5. Ticket endpoint with token returns 200
+GET http://localhost:8080/api/tickets
+Authorization: Bearer {{loginUser.response.body.$.token}}
+
+###
+
+### 6. Create ticket with normal USER token returns 403
+POST http://localhost:8080/api/tickets
+Authorization: Bearer {{loginUser.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "title": "Should be blocked",
+  "description": "USER role cannot create tickets",
+  "category": "Network",
+  "priority": "LOW",
+  "createdBy": "day9demo@example.com"
+}
+
+###
+
+### 7. Login admin returns token
+# @name loginAdmin
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "Admin@123"
+}
+
+###
+
+### 8. Create ticket with ADMIN token returns 201
+POST http://localhost:8080/api/tickets
+Authorization: Bearer {{loginAdmin.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "title": "Should be allowed",
+  "description": "ADMIN role can create tickets",
+  "category": "Network",
+  "priority": "HIGH",
+  "createdBy": "admin@example.com"
+}
