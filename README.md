@@ -613,6 +613,12 @@ The better prompt fixes this by naming the exact file and methods, listing expli
 6. Tests that must still pass after any AI-suggested change: mvn test (backend), npm run test (Vitest unit/component suite), and npm run test:e2e (Playwright smoke test) in support-desk-ui.
 7. HTTP requests to manually rerun to prove nothing broke: the files in support-desk-api/requests/, especially day09-auth.http (401/403/200 role checks) and day13-update-ticket.http (edit flow).
 8. Before accepting AI output: confirm it didn't invent a repository/service method that doesn't exist, and confirm no secret value from a shared file was echoed back in the AI's response.
+
+# Day 16 Exercise 2 - Backend Ticket Service Refactor
+- Before: getTicketById and updateTicket each independently called ticketRepository.findById(id).orElseThrow(...) with the identical error message — the same "not found" logic duplicated in two places. After: both call the new findTicketOrThrow(id) helper, so there's one place that defines what "ticket not found" means.
+- Before: createTicket and updateTicket wrote field values straight from the request DTO into the Ticket model with no defensive trimming, and status/priority casing was never normalized before hitting the database — a client sending " Printer jam " or "low" would store it exactly like that. 
+- After: normalizeRequired trims whitespace on free-text fields, and normalizeStatus/normalizePriority trim and uppercase those two fields specifically, since your data model treats "HIGH" and "high" as different values (TicketFilterPanel.jsx and UpdateTicketRequest's @Pattern both hardcode the uppercase enum strings).
+- Nothing about the public contract changed: method names, parameter types, return types, TicketResponse fields, and exception type (ResourceNotFoundException → still 404) are all identical. For any request that already sends clean, correctly-cased data (which is everything in your requests/*.http files), the output is byte-for-byte the same as before — trimming an already-trimmed string and uppercasing an already-uppercase string is a no-op.
 ---
 
 ## AI-Assisted Learning Guidelines
