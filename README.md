@@ -706,6 +706,57 @@ Interesting finding: 401 and 403 never reach RequestTimingFilter at all, since i
 4. One example where input should be rejected
 - A `title` containing something like `<script>alert(1)</script>`. Sanitising this by silently stripping the tags would hide an attempted attack and still save mangled content — the correct move is to reject it during validation, not quietly clean it and pretend nothing happened.
 
+# D17 Exercise 07 — Backend Dockerfile
+
+**File:** [Dockerfile](support-desk-api/Dockerfile)
+
+Multi-stage build: `maven:3.9-eclipse-temurin-21` compiles the JAR, `eclipse-temurin:21-jre-alpine` runs it — only the final `app.jar` is copied into the runtime image, no Maven/source code included. No secrets baked in (`ENV` only sets a safe default port).
+
+Build command:
+```bash
+docker build -t support-desk-api:day17 .
+```
+
+Build output:
+```text
+[+] Building 368.8s (18/18) FINISHED
+ => [build 6/7] RUN mvn -B clean package -DskipTests                         7.2s
+ => [stage-1 3/3] COPY --from=build /workspace/app.jar app.jar               0.1s
+ => => naming to docker.io/library/support-desk-api:day17
+```
+
+# D17 Exercise 08 — .dockerignore, Secrets and Run
+
+**Files:** [.dockerignore](support-desk-api/.dockerignore), [.env.example](support-desk-api/.env.example)
+
+Had to parameterise `application.properties` first — `spring.mongodb.host` was hardcoded to `localhost`, which inside a container means the container itself, not the host machine. Changed it (and port/database/username/password/authentication-database) to `${MONGO_HOST:localhost}`-style placeholders, same pattern already used for `app.jwt.secret`. Local `.env` sets `MONGO_HOST=host.docker.internal` so the container can reach MongoDB running on the host.
+
+Run command:
+```bash
+docker run --rm --name support-desk-api-day17 \
+  --env-file .env \
+  -e SPRING_PROFILES_ACTIVE=docker \
+  -p 8080:8080 \
+  support-desk-api:day17
+```
+
+Health check:
+```json
+{"service":"support-desk-api","status":"UP"}
+```
+
+Readiness check:
+```json
+{"service":"support-desk-api","status":"READY","database":"CONNECTED"}
+```
+
+Safe log example (from `docker logs`, no secrets):
+```text
+requestId=023c7dbc method=GET path=/api/readiness status=200 durationMs=48
+```
+
+Why real secrets aren't committed: `JWT_SECRET` and the Mongo credentials live only in the local `.env` file. `.gitignore` keeps `.env` out of version control, and `.dockerignore` keeps it out of the image build context entirely — `application.properties` only contains `${VAR:default}` placeholders, and real values are injected at `docker run` time via `--env-file`, never baked into the image.
+
 ---
 
 ## AI-Assisted Learning Guidelines
