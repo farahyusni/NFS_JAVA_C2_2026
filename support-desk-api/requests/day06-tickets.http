@@ -1,3 +1,7 @@
+@userToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYXk5ZGVtb0BleGFtcGxlLmNvbSIsInJvbGUiOiJVU0VSIiwiaXNzIjoic3VwcG9ydC1kZXNrLWFwaSIsIm5hbWUiOiJEYXk5IERlbW8gVXNlciIsImV4cCI6MTc4NzAzMDk1MywiaWF0IjoxNzg3MDI3MzUzLCJ1c2VySWQiOiI2YTY0YzAxMzljYzU0MWJiZGRlN2EzNTkifQ.FyZof3PCAspVUPfWdTvztLnMdVQZZ0mKIKXEolMHYaY
+
+#@adminToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJBRE1JTiIsImlzcyI6InN1cHBvcnQtZGVzay1hcGkiLCJuYW1lIjoiQWRtaW4gVXNlciIsImV4cCI6MTc4NzAzMDQzMCwiaWF0IjoxNzg3MDI2ODMwLCJ1c2VySWQiOiI2YTY0YmQ4NTljYzU0MWJiZGRlN2EzNTgifQ.MAoohgfAuamD9c1fLzmXcwjDR1nE7nbeJgD67yaeIvw
+
 ### Health check
 GET http://localhost:8080/api/health
 
@@ -6,20 +10,35 @@ GET http://localhost:8080/api/health
 GET http://localhost:8080/api/about
 
 
+### Login as admin (needed for the requests below - this file predates Day 9 security)
+# @name login
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "Admin@123"
+}
+
+
 ### Get all tickets
 GET http://localhost:8080/api/tickets
+Authorization: Bearer {{login.response.body.$.token}}
 
 
 ### Get one existing ticket
 GET http://localhost:8080/api/tickets/T001
+Authorization: Bearer {{login.response.body.$.token}}
 
 
 ### Get one missing ticket
 GET http://localhost:8080/api/tickets/T999
+Authorization: Bearer {{login.response.body.$.token}}
 
 
 ### Create a valid ticket
 POST http://localhost:8080/api/tickets
+Authorization: Bearer {{login.response.body.$.token}}
 Content-Type: application/json
 
 {
@@ -33,6 +52,7 @@ Content-Type: application/json
 
 ### Create an invalid ticket (blank required fields)
 POST http://localhost:8080/api/tickets
+Authorization: Bearer {{login.response.body.$.token}}
 Content-Type: application/json
 
 {
@@ -41,4 +61,18 @@ Content-Type: application/json
   "category": "",
   "priority": "",
   "createdBy": ""
+}
+
+
+### Create a ticket with a USER token (expect 403 - POST /api/tickets is ADMIN-only)
+POST http://localhost:8080/api/tickets
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{
+  "title": "Should be blocked",
+  "description": "USER role cannot create tickets",
+  "category": "Network",
+  "priority": "LOW",
+  "createdBy": "day9demo@example.com"
 }

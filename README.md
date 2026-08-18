@@ -678,6 +678,18 @@ The better prompt fixes this by naming the exact file and methods, listing expli
 
 ![readiness endpoint](exercises/day17/screenshots/readiness-endpoint.png)
 
+# D17 Exercise 03 — Error Tracking
+
+| Error | Request made | Why it happened | Where you saw it in logs |
+|---|---|---|---|
+| 401 Unauthorized | `GET /api/tickets` with no token | `anyRequest().authenticated()` in SecurityConfig rejects it before any controller or filter runs | Not logged — Spring Security rejects the request before RequestTimingFilter runs (no X-Request-Id header, no console line) |
+| 403 Forbidden | `POST /api/tickets` with a USER-role token | SecurityConfig — POST to /api/tickets requires `hasRole("ADMIN")`; USER is authenticated but not authorized | Not logged — same reason as 401, the role check happens before RequestTimingFilter runs |
+| 400 Bad Request | `POST /api/tickets` (ADMIN token, blank fields) | `@NotBlank` on CreateTicketRequest fails validation, caught by GlobalExceptionHandler | `requestId=608d0eb2 method=POST path=/api/tickets status=400 durationMs=56` |
+| 404 Not Found | `GET /api/tickets/T999` (valid token) | `findTicketOrThrow` in TicketService throws ResourceNotFoundException | `requestId=6c33babd method=GET path=/api/tickets/T999 status=404 durationMs=71` |
+| 409 Conflict | `POST /api/auth/register` with an already-registered email | AuthService finds a duplicate email, throws DuplicateResourceException | `requestId=3fd25646 method=POST path=/api/auth/register status=409 durationMs=54` |
+
+Interesting finding: 401 and 403 never reach RequestTimingFilter at all, since it's a plain `@Component` filter with no explicit ordering, so Spring Boot registers it after Spring Security's own filter chain by default. Only errors that happen inside the app (after authentication/authorization succeed) — 400, 404, 409 — actually get logged by it.
+
 ---
 
 ## AI-Assisted Learning Guidelines
