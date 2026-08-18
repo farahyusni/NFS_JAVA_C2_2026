@@ -690,6 +690,22 @@ The better prompt fixes this by naming the exact file and methods, listing expli
 
 Interesting finding: 401 and 403 never reach RequestTimingFilter at all, since it's a plain `@Component` filter with no explicit ordering, so Spring Boot registers it after Spring Security's own filter chain by default. Only errors that happen inside the app (after authentication/authorization succeed) — 400, 404, 409 — actually get logged by it.
 
+# D17 Exercise 05 — Input Sanitisation
+
+**File:** [InputSanitizer.java](support-desk-api/src/main/java/com/example/supportdesk/util/InputSanitizer.java)
+
+1. What is validation?
+- Validation decides whether input is allowed at all. It's a pass/fail check — `@NotBlank`/`@Pattern` on `CreateTicketRequest`/`UpdateTicketRequest` reject a request outright before it ever reaches the service layer.
+
+2. What is sanitisation?
+- Sanitisation cleans input that's already been accepted, so it's stored and compared consistently, without changing what the user actually meant. `InputSanitizer.trimToNull`/`cleanText`/`normalizeCode` do this — trimming stray whitespace, stripping control characters, and normalising casing.
+
+3. One example where input should be cleaned
+- A ticket's `priority` sent as `" high "` or `"low"` — trimming and uppercasing to `"HIGH"`/`"LOW"` doesn't change the user's intent, it just makes the stored value consistent. `TicketService.normalizeStatus`/`normalizePriority` already do exactly this.
+
+4. One example where input should be rejected
+- A `title` containing something like `<script>alert(1)</script>`. Sanitising this by silently stripping the tags would hide an attempted attack and still save mangled content — the correct move is to reject it during validation, not quietly clean it and pretend nothing happened.
+
 ---
 
 ## AI-Assisted Learning Guidelines
