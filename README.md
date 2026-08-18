@@ -673,6 +673,11 @@ The better prompt fixes this by naming the exact file and methods, listing expli
 **One check used to confirm behaviour still works**
 - After removing the duplicate method, reran support-desk-api/requests/day13-update-ticket.http (login → get a real ticket id → PUT /api/v1/tickets/{id}) and confirmed it still returned 200 with the updated fields echoed back exactly as before the refactor.
 
+# D17 Exercise 02 — Readiness Endpoint
+[ReadinessController.java](support-desk-api/src/main/java/com/example/supportdesk/controller/ReadinessController.java)
+
+![readiness endpoint](exercises/day17/screenshots/readiness-endpoint.png)
+
 ---
 
 ## AI-Assisted Learning Guidelines

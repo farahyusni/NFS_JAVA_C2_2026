@@ -28,3 +28,6 @@ Content-Type: application/json
   "priority": "HIGH",
   "status": "IN_PROGRESS"
 }
+
+### readiness endpoint
+GET http://localhost:8080/api/readiness
