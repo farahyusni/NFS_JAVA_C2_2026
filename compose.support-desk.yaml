@@ -1,0 +1,73 @@
+services:
+  mongo:
+    image: mongo:8
+    container_name: support-desk-mongo
+    restart: unless-stopped
+    environment:
+      # Root user, created once when the data volume is first initialized.
+      # Reuses the same MONGO_USERNAME/MONGO_PASSWORD values from .env that
+      # the backend already uses for its local (non-Docker) Mongo connection.
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME:-app_user}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-abc123}
+    ports:
+      - "${MONGO_HOST_PORT:-27018}:27017"
+    volumes:
+      - support_desk_mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "-u", "${MONGO_USERNAME:-app_user}", "-p", "${MONGO_PASSWORD:-abc123}", "--authenticationDatabase", "admin", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  backend:
+    build:
+      context: ./support-desk-api
+      dockerfile: Dockerfile
+    container_name: support-desk-api
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      MONGO_HOST: mongo
+      MONGO_PORT: 27017
+      MONGO_DATABASE: support_desk_db
+      # Root users created via MONGO_INITDB_ROOT_* authenticate against the
+      # "admin" database, not support_desk_db.
+      MONGO_AUTH_DATABASE: admin
+      MONGO_USERNAME: ${MONGO_USERNAME:-app_user}
+      MONGO_PASSWORD: ${MONGO_PASSWORD:-abc123}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in support-desk-api/.env}
+      JWT_EXPIRATION_MINUTES: ${JWT_EXPIRATION_MINUTES:-60}
+      SERVER_PORT: 8080
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 45s
+
+  frontend:
+    build:
+      context: ./support-desk-ui
+      dockerfile: Dockerfile
+    container_name: support-desk-ui
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    ports:
+      - "${FRONTEND_PORT:-5173}:80"
+
+volumes:
+  support_desk_mongo_data:

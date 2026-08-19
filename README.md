@@ -757,6 +757,28 @@ requestId=023c7dbc method=GET path=/api/readiness status=200 durationMs=48
 
 Why real secrets aren't committed: `JWT_SECRET` and the Mongo credentials live only in the local `.env` file. `.gitignore` keeps `.env` out of version control, and `.dockerignore` keeps it out of the image build context entirely — `application.properties` only contains `${VAR:default}` placeholders, and real values are injected at `docker run` time via `--env-file`, never baked into the image.
 
+# D18 Exercise 01 — Frontend Dockerfile
+
+**Files:** [Dockerfile](support-desk-ui/Dockerfile), [nginx.conf](support-desk-ui/nginx.conf), [.dockerignore](support-desk-ui/.dockerignore)
+
+Multi-stage build: `node:24-alpine` runs `npm run build` (Vite) to produce `dist/`, then `nginx:1.27-alpine` serves those static files — `npm run dev` never appears anywhere, and the final image has no Node installed at all. `nginx.conf` proxies `/api/` to a `backend` upstream (the Spring Boot service name a future Docker Compose setup will provide) and falls back to `index.html` for React Router paths.
+
+Build command:
+```bash
+docker build -t support-desk-ui:day18 .
+```
+
+First build (no `.dockerignore` yet) transferred a 137.90MB build context and took 721.9s, because the host's 149MB `node_modules/` was being copied in on every build — and worse, `COPY . .` in the Dockerfile was overwriting the container's freshly-installed Linux `node_modules` with the host's Windows-built native binaries after `npm ci` already ran. Added a proper `.dockerignore` (node_modules/, dist/, .env, IDE files, etc.); rebuild dropped to a 3.43kB context and finished in 5.8s.
+
+Build output after the fix:
+```text
+[+] Building 5.8s (18/18) FINISHED
+ => [internal] load build context                                    0.5s
+ => => transferring context: 3.43kB                                  0.3s
+ => [build 6/6] RUN npm run build                                    2.0s
+ => => naming to docker.io/library/support-desk-ui:day18
+```
+
 ---
 
 ## AI-Assisted Learning Guidelines
