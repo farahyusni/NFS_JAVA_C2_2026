@@ -761,23 +761,19 @@ Why real secrets aren't committed: `JWT_SECRET` and the Mongo credentials live o
 
 **Files:** [Dockerfile](support-desk-ui/Dockerfile), [nginx.conf](support-desk-ui/nginx.conf), [.dockerignore](support-desk-ui/.dockerignore)
 
-Multi-stage build: `node:24-alpine` runs `npm run build` (Vite) to produce `dist/`, then `nginx:1.27-alpine` serves those static files — `npm run dev` never appears anywhere, and the final image has no Node installed at all. `nginx.conf` proxies `/api/` to a `backend` upstream (the Spring Boot service name a future Docker Compose setup will provide) and falls back to `index.html` for React Router paths.
+# D18 Exercise 02 — Nginx Config
 
-Build command:
-```bash
-docker build -t support-desk-ui:day18 .
-```
+**File:** [nginx.conf](support-desk-ui/nginx.conf)
 
-First build (no `.dockerignore` yet) transferred a 137.90MB build context and took 721.9s, because the host's 149MB `node_modules/` was being copied in on every build — and worse, `COPY . .` in the Dockerfile was overwriting the container's freshly-installed Linux `node_modules` with the host's Windows-built native binaries after `npm ci` already ran. Added a proper `.dockerignore` (node_modules/, dist/, .env, IDE files, etc.); rebuild dropped to a 3.43kB context and finished in 5.8s.
+# D18 Exercise 03 — Compose File
 
-Build output after the fix:
-```text
-[+] Building 5.8s (18/18) FINISHED
- => [internal] load build context                                    0.5s
- => => transferring context: 3.43kB                                  0.3s
- => [build 6/6] RUN npm run build                                    2.0s
- => => naming to docker.io/library/support-desk-ui:day18
-```
+**Files:** [compose.support-desk.yaml](compose.support-desk.yaml), [Dockerfile](support-desk-api/Dockerfile), [Dockerfile](support-desk-ui/Dockerfile)
+
+# D18 Exercise 04 — Environment and Secrets
+
+**File:** [.env.example](support-desk-api/.env.example)
+
+Why `.env` should not be committed: it holds the real JWT signing secret and MongoDB credentials for this environment. If committed, anyone with read access to the repository — including its full git history, even after a later "fix" commit removes the file — could sign valid JWTs for any user/role or connect directly to the database. `.gitignore` excludes `.env`/`.env.*`/`*.env` (with a carve-out for `.env.example`), so only the placeholder template is ever tracked; real values are supplied locally and injected at container start via `--env-file`, never baked into an image or a commit.
 
 ---
 
