@@ -775,6 +775,12 @@ Why real secrets aren't committed: `JWT_SECRET` and the Mongo credentials live o
 
 Why `.env` should not be committed: it holds the real JWT signing secret and MongoDB credentials for this environment. If committed, anyone with read access to the repository — including its full git history, even after a later "fix" commit removes the file — could sign valid JWTs for any user/role or connect directly to the database. `.gitignore` excludes `.env`/`.env.*`/`*.env` (with a carve-out for `.env.example`), so only the placeholder template is ever tracked; real values are supplied locally and injected at container start via `--env-file`, never baked into an image or a commit.
 
+# D18 Exercise 05 — Broken Compose Troubleshooting Lab
+
+**Files:** [compose.broken.yml](broken-compose/compose.broken.yml), [compose.fixed.yml](broken-compose/compose.fixed.yml), [.env.broken.example](broken-compose/.env.broken.example), [troubleshooting-report.md](broken-compose/troubleshooting-report.md)
+
+Found and fixed 3 real bugs (undefined `depends_on` service reference, an unused Mongo connection env var pointing at `localhost` instead of the `mongo` service, and missing Mongo auth causing a driver-level connection string error) plus 2 port collisions with an already-running stack. Verified `down` vs `down -v` with a real marker document — survived a plain `down`, was gone after `down -v`. Full report with symptoms/logs/root causes/fixes in `troubleshooting-report.md`.
+
 ---
 
 ## AI-Assisted Learning Guidelines

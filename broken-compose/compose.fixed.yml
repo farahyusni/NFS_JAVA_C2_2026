@@ -1,0 +1,78 @@
+# Fixed version of compose.broken.yml for the Day 18 troubleshooting lab.
+# Do not overwrite compose.broken.yml - this is a separate file per the exercise.
+
+services:
+  mongo:
+    image: mongo:8
+    container_name: asset-tracker-mongo-lab
+    restart: unless-stopped
+    environment:
+      # Root user, created once when the data volume is first initialized.
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME:-lab_app_user}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD:-lab_abc123}
+    ports:
+      - "${MONGO_HOST_PORT:-27019}:27017"
+    volumes:
+      - mongo_lab_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "-u", "${MONGODB_USERNAME:-lab_app_user}", "-p", "${MONGODB_PASSWORD:-lab_abc123}", "--authenticationDatabase", "admin", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  backend:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: asset-tracker-api-lab
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      # The app reads MONGODB_HOST/PORT/DATABASE (application.properties),
+      # not SPRING_MONGODB_URI - that var was never consumed by anything.
+      # "mongo" is the service name Compose resolves on the shared network;
+      # "localhost" inside this container would mean the container itself.
+      MONGODB_HOST: mongo
+      MONGODB_PORT: 27017
+      MONGODB_DATABASE: asset_tracker_db
+      # Root users created via MONGO_INITDB_ROOT_* authenticate against "admin".
+      MONGODB_AUTH_DATABASE: admin
+      MONGODB_USERNAME: ${MONGODB_USERNAME:-lab_app_user}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD:-lab_abc123}
+      JWT_SECRET: ${APP_JWT_SECRET:?Set APP_JWT_SECRET in broken-compose/.env.broken}
+      JWT_EXPIRATION_MINUTES: ${APP_JWT_EXPIRATION_MINUTES:-60}
+      SERVER_PORT: 8080
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 45s
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: asset-tracker-ui-lab
+    restart: unless-stopped
+    depends_on:
+      # Was "api" - no such service exists, the backend service is named "backend".
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    ports:
+      - "${FRONTEND_PORT:-5174}:80"
+
+volumes:
+  mongo_lab_data:
